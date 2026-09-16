@@ -1,0 +1,7 @@
+{
+  "source": "ma-btec-all/ma-btec-all.github.io pinned revision",
+  "note": "The application first checks this folder for bundled datasets, then uses its pinned source and stores a persistent browser cache.",
+  "datasets": [
+    "btec_it_data.json","btec_agriculture_data.json","hospitality_test.json","business_exam_200.json","art_and_design.json","building_and_construction.json","Engineering.json","Creative_Media_Quiz.json","Tourism_and_Travel_Quiz.json","Beauty_Specialty_Quiz.json","healthcare_quiz.json"
+  ]
+}
