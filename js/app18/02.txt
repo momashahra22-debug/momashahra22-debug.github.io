@@ -1,0 +1,200 @@
+غيل');
+    btn.title=playing?'إيقاف مؤقت':'تشغيل';
+  }
+  function formatVideoTime(value){
+    const total=Math.max(0,Math.floor(Number(value)||0));
+    const h=Math.floor(total/3600),m=Math.floor((total%3600)/60),sec=total%60;
+    return h?`${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`:`${m}:${String(sec).padStart(2,'0')}`;
+  }
+  function updateVideoProgress(box,player){
+    if(!box||!player||!activeVideoReady)return;
+    try{
+      const duration=Math.max(0,Number(player.getDuration?.())||0);
+      const current=Math.max(0,Number(player.getCurrentTime?.())||0);
+      const loaded=Math.min(1,Math.max(0,Number(player.getVideoLoadedFraction?.())||0));
+      const seek=box.querySelector('[data-vseek]');
+      const cur=box.querySelector('[data-vtime]');
+      const dur=box.querySelector('[data-vduration]');
+      const buffer=box.querySelector('[data-vbuffer]');
+      if(seek){seek.max=String(duration||1);if(!activeVideoSeeking)seek.value=String(Math.min(current,duration||current));const pct=duration?Math.max(0,Math.min(100,(Number(seek.value)||0)/duration*100)):0;seek.style.setProperty('--seek-fill',pct+'%');}
+      if(cur&&!activeVideoSeeking)cur.textContent=formatVideoTime(current);
+      if(dur)dur.textContent=formatVideoTime(duration);
+      if(buffer)buffer.style.width=`${Math.round(loaded*10000)/100}%`;
+    }catch{}
+  }
+  function startVideoProgress(box,player){
+    if(activeVideoProgressTimer)clearInterval(activeVideoProgressTimer);
+    updateVideoProgress(box,player);
+    activeVideoProgressTimer=setInterval(()=>{if(activeVideoBox===box&&activeVideoReady)updateVideoProgress(box,player)},250);
+  }
+  function setQualityBadge(box,quality){
+    const btn=box?.querySelector('[data-vquality]');if(!btn)return;
+    const labels={small:'240p',medium:'360p',large:'480p',hd720:'720p',hd1080:'1080p',highres:'HD+'};
+    btn.textContent=labels[quality]||'HD Auto';
+    btn.title=quality?`الجودة الحالية: ${btn.textContent} — اضغط لاختيار 720p/1080p يدويًا`:'اضغط لاختيار 720p/1080p يدويًا';
+  }
+  async function mountStudyMateVideo(box,id,title){
+    stopActiveVideo();activeVideoBox=box;activeVideoReady=false;
+    const mountId='sm-yt-'+uid();
+    box.innerHTML=`<div class="site-video-crop"><div id="${mountId}" class="site-video-api-target"></div></div><div class="site-video-edge top"></div><div class="site-video-edge bottom"></div><div class="site-video-progress" aria-label="شريط تقدم الفيديو"><span data-vtime>0:00</span><div class="site-video-track"><div class="site-video-buffer" data-vbuffer></div><input data-vseek type="range" min="0" max="1" value="0" step="0.1" aria-label="تقديم أو تأخير الفيديو"></div><span data-vduration>0:00</span></div><button type="button" class="site-video-quality-exit" data-vquality-exit aria-label="العودة للمشغل" title="العودة للمشغل">العودة للمشغل ←</button><div class="site-video-brand"><span>B</span><b>StudyMate Player</b></div><div class="site-video-controls"><button type="button" data-vtoggle aria-label="تشغيل" title="تشغيل">▶</button><button type="button" data-vquality aria-label="أفضل جودة تلقائيًا" title="أفضل جودة تلقائيًا">HD Auto</button><button type="button" data-vfull aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button></div><div class="site-video-loading">جاري تجهيز الفيديو...</div>`;
+    box.classList.add('playing');
+    try{
+      const YT=await loadYouTubeApi();
+      if(activeVideoBox!==box)return;
+      const playerVars={autoplay:1,controls:1,rel:0,playsinline:1,iv_load_policy:3,disablekb:0,fs:0};
+      if(/^https?:$/.test(location.protocol))playerVars.origin=location.origin;
+      const player=new YT.Player(mountId,{
+        videoId:id,width:1280,height:720,host:'https://www.youtube-nocookie.com',playerVars,
+        events:{
+          onReady:()=>{
+            if(activeVideoBox!==box){try{player.destroy()}catch{};return}
+            activeVideoPlayer=player;activeVideoReady=true;
+            box.querySelector('.site-video-loading')?.remove();
+            try{player.playVideo()}catch{}
+            setVideoToggle(box,YT.PlayerState.PLAYING);
+            setQualityBadge(box,'');
+            startVideoProgress(box,player);
+          },
+          onStateChange:e=>{if(activeVideoBox===box){setVideoToggle(box,e.data);updateVideoProgress(box,player)}},
+          onPlaybackQualityChange:e=>{if(activeVideoBox===box)setQualityBadge(box,e.data)},
+          onError:()=>{if(activeVideoBox===box){activeVideoReady=false;box.querySelector('.site-video-loading')?.replaceChildren(document.createTextNode('تعذر تشغيل الفيديو داخل الموقع.'))}}
+        }
+      });
+      activeVideoPlayer=player;
+      const syncHdScale=()=>{
+        if(box.classList.contains('native-quality-mode'))return;
+        const crop=box.querySelector('.site-video-crop');if(!crop)return;
+        const r=crop.getBoundingClientRect();
+        if(!r.width||!r.height)return;
+        // cover the themed viewport while keeping the iframe's layout viewport at 1280x720
+        const scale=Math.max(r.width/1280,r.height/720);
+        box.style.setProperty('--sm-hd-scale',String(Math.max(.18,Math.min(2,scale))));
+      };
+      syncHdScale();
+      const hdResizeObserver=('ResizeObserver' in window)?new ResizeObserver(syncHdScale):null;
+      try{hdResizeObserver?.observe(box)}catch{}
+      const toggle=box.querySelector('[data-vtoggle]');
+      toggle.onclick=ev=>{
+        ev.stopPropagation();if(!activeVideoReady||!activeVideoPlayer)return;
+        try{
+          const st=activeVideoPlayer.getPlayerState();
+          if(st===YT.PlayerState.PLAYING||st===YT.PlayerState.BUFFERING)activeVideoPlayer.pauseVideo();
+          else if(st===YT.PlayerState.ENDED){activeVideoPlayer.seekTo(0,true);activeVideoPlayer.playVideo()}
+          else activeVideoPlayer.playVideo();
+        }catch{}
+      };
+      const seek=box.querySelector('[data-vseek]');
+      const seekToValue=()=>{if(!activeVideoReady||!activeVideoPlayer||!seek)return;try{activeVideoPlayer.seekTo(Number(seek.value)||0,true);updateVideoProgress(box,activeVideoPlayer)}catch{}finally{activeVideoSeeking=false}};
+      if(seek){
+        seek.addEventListener('pointerdown',()=>{activeVideoSeeking=true});
+        seek.addEventListener('input',()=>{activeVideoSeeking=true;const cur=box.querySelector('[data-vtime]');if(cur)cur.textContent=formatVideoTime(seek.value);const duration=Number(activeVideoPlayer?.getDuration?.())||0;const pct=duration?Math.max(0,Math.min(100,(Number(seek.value)||0)/duration*100)):0;seek.style.setProperty('--seek-fill',pct+'%')});
+        seek.addEventListener('change',seekToValue);
+        seek.addEventListener('pointerup',seekToValue);
+        seek.addEventListener('keyup',e=>{if(['ArrowLeft','ArrowRight','Home','End','PageUp','PageDown'].includes(e.key))seekToValue()});
+      }
+      const fullBtn=box.querySelector('[data-vfull]');
+      const fullscreenElement=()=>document.fullscreenElement||document.webkitFullscreenElement||null;
+      const syncFullscreenButton=()=>{
+        if(!fullBtn)return;
+        const isFull=fullscreenElement()===box;
+        fullBtn.textContent=isFull?'⛶':'⛶';
+        fullBtn.setAttribute('aria-label',isFull?'تصغير الفيديو':'ملء الشاشة');
+        fullBtn.title=isFull?'تصغير الفيديو':'ملء الشاشة';
+        fullBtn.classList.toggle('is-fullscreen',isFull);
+      };
+      const requestBoxFullscreen=()=>{
+        const fn=box.requestFullscreen||box.webkitRequestFullscreen;
+        if(fn)return Promise.resolve(fn.call(box));
+        return Promise.reject(new Error('Fullscreen API غير مدعوم'));
+      };
+      const exitBoxFullscreen=()=>{
+        const fn=document.exitFullscreen||document.webkitExitFullscreen;
+        if(fn)return Promise.resolve(fn.call(document));
+        return Promise.reject(new Error('Fullscreen API غير مدعوم'));
+      };
+      fullBtn.onclick=async ev=>{
+        ev.stopPropagation();
+        try{
+          if(fullscreenElement()) await exitBoxFullscreen();
+          else await requestBoxFullscreen();
+        }catch(err){console.warn('Fullscreen toggle failed',err)}
+        syncFullscreenButton();
+      };
+      const onFullscreenChange=()=>syncFullscreenButton();
+      document.addEventListener('fullscreenchange',onFullscreenChange);
+      document.addEventListener('webkitfullscreenchange',onFullscreenChange);
+      syncFullscreenButton();
+      const qualityBtn=box.querySelector('[data-vquality]');
+      const qualityExit=box.querySelector('[data-vquality-exit]');
+      const enterNativeQualityMode=()=>{
+        box.classList.add('native-quality-mode');
+        qualityBtn?.setAttribute('aria-pressed','true');
+        try{activeVideoPlayer?.pauseVideo?.()}catch{}
+        toast('اختر ⚙ من مشغل YouTube ثم الجودة واختر 720p أو 1080p. بعد الاختيار اضغط «العودة للمشغل».');
+      };
+      const exitNativeQualityMode=()=>{
+        box.classList.remove('native-quality-mode');
+        qualityBtn?.setAttribute('aria-pressed','false');
+        requestAnimationFrame(syncHdScale);
+      };
+      if(qualityBtn){
+        qualityBtn.setAttribute('aria-pressed','false');
+        qualityBtn.onclick=ev=>{ev.stopPropagation();enterNativeQualityMode()};
+      }
+      if(qualityExit)qualityExit.onclick=ev=>{ev.stopPropagation();exitNativeQualityMode()};
+    }catch(e){
+      console.error(e);activeVideoReady=false;
+      const load=box.querySelector('.site-video-loading');if(load)load.textContent='تعذر تحميل مشغل الفيديو. حاول تحديث الصفحة.';
+    }
+  }
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&activeVideoReady){try{activeVideoPlayer?.pauseVideo?.()}catch{}}});
+  window.addEventListener('beforeunload',stopActiveVideo);
+
+  function page(title,sub,html){app.innerHTML=`<div class="page-enter"><div class="page-title reveal"><h1>${safe(title)}</h1>${sub?`<p>${safe(sub)}</p>`:''}</div><div class="page-body reveal">${html}</div></div>`}
+  let revealObserver=null;
+  function initDynamicMotion(){
+    try{revealObserver?.disconnect?.()}catch{}
+    const nodes=$$('.reveal-on-scroll');
+    if(!nodes.length)return;
+    const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if(reduced||!('IntersectionObserver' in window)){nodes.forEach(el=>el.classList.add('visible'));return}
+    revealObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver?.unobserve?.(entry.target)}});
+    },{threshold:.08,rootMargin:'0px 0px -5% 0px'});
+    nodes.forEach(el=>revealObserver.observe(el));
+  }
+  function route(name){stopActiveVideo();location.hash=name==='home'?'':'#'+name}
+  function syncNav(name){$$('.nav-pill,[data-route]',document).forEach(x=>{if(x.closest?.('.nav-more-menu')||x.classList?.contains('nav-pill'))x.classList.toggle('active',x.dataset.route===name)});const more=['schedule','timer','files'].includes(name);$('#navMoreToggle')?.classList.toggle('active',more)}
+  function bindGo(){$$('[data-go]').forEach(b=>b.onclick=()=>route(b.dataset.go))}
+  $$('.nav-pill,.brand,.nav-more-menu [data-route]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.route)route(b.dataset.route);$('#navMore')?.classList.remove('open');$('#navMoreToggle')?.setAttribute('aria-expanded','false')}));
+  $('#mobileMenu').addEventListener('click',()=>$('#navPills').classList.toggle('open'));
+  $('#navMoreToggle')?.addEventListener('click',e=>{e.stopPropagation();const box=$('#navMore');const open=!box.classList.contains('open');box.classList.toggle('open',open);$('#navMoreToggle').setAttribute('aria-expanded',String(open))});
+  document.addEventListener('click',e=>{if(!e.target.closest?.('#navMore')){$('#navMore')?.classList.remove('open');$('#navMoreToggle')?.setAttribute('aria-expanded','false')}});
+  window.addEventListener('hashchange',render);
+
+  function featureCards(){return tools.map(([r,i,t,d],idx)=>`<button class="feature-card reveal-on-scroll" data-go="${r}" style="text-align:right;color:inherit;transition-delay:${Math.min(idx*35,210)}ms"><div class="iconbox">${i}</div><h3>${safe(t)}</h3><p>${safe(d)}</p><span class="card-arrow">↗</span></button>`).join('')}
+  function contentCards(type,items){
+    if(!items.length)return ``;
+    return `<div class="grid">${items.map(x=>`<article class="content-card"><div class="card-top"><span class="badge ${type==='labs'?'gold':''}">${type==='lectures'?'محاضرة':'Lab'}</span><span class="badge gray">${safe(x.unit||'BTEC')}</span></div><h3>${safe(x.title)}</h3><p>${safe(x.description||'')}</p><div class="meta">${x.instructions?'<span>تعليمات متوفرة</span>':''}${x.youtube_url?'<span>فيديو متوفر</span>':''}</div>${x.youtube_url&&validUrl(x.youtube_url)?`<div style="margin-top:14px"><a class="btn small" target="_blank" rel="noopener noreferrer" href="${safe(x.youtube_url)}">فتح المحاضرة</a></div>`:''}</article>`).join('')}</div>`
+  }
+
+  async function home(){
+    app.innerHTML=`<div class="home-minimal">
+      <section class="hero-sahaba hero-only" id="heroSahaba">
+        <div class="hero-copy sahaba-reveal">
+          <div class="hero-kicker"><span></span> منصة BTEC الشاملة للطالب</div>
+          <h1>كل ما تحتاجه في <em>BTEC</em><br><strong>بمكان واحد.</strong></h1>
+          <p class="hero-lead">من فهم النظام والمصطلحات إلى الكورسات والمحاضرات واللابات والكويزات وحاسبة المعدل — رحلة دراسة مرتبة، واضحة، وعملية.</p>
+          <div class="hero-actions">
+            <button class="btn primary-blue magnetic" data-go="courses">ابدأ رحلتك الآن <span>←</span></button>
+            <button class="btn blue-ghost magnetic" data-go="about-btec">استكشف المنصة</button>
+          </div>
+          <div class="hero-verse-inline">
+            <div class="verse-mark">﴿</div>
+            <div><b>وَقُل رَّبِّ زِدْنِي عِلْمًا</b><small>سورة طه — الآية 114</small></div>
+            <div class="verse-mark">﴾</div>
+          </div>
+        </div>
+        <div class="hero-character sahaba-reveal" id="heroCharacter">
+          <div class="character-glow"></div>
+          <div class="character-frame"><img src="data:image/webp;base64,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
