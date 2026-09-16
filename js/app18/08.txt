@@ -1,0 +1,217 @@
+cf6','#ec4899','#22c55e','#38bdf8','#d4a574','#94a3b8'];
+    let saved;try{saved=JSON.parse(localStorage.getItem('sm_schedule')||'[]')}catch{saved=[]}
+    saved=(Array.isArray(saved)?saved:[]).map((x,i)=>({
+      id:x.id||`legacy-${i}-${Date.now()}`,
+      title:x.title||x.task||'مادة',
+      day_of_week:Number.isFinite(x.day_of_week)?x.day_of_week:Math.max(0,DAYS.indexOf(x.day)),
+      start_time:x.start_time||'08:00',
+      end_time:x.end_time||'09:00',
+      color:x.color||COLORS[i%COLORS.length]
+    })).sort((a,b)=>a.day_of_week-b.day_of_week||a.start_time.localeCompare(b.start_time));
+    page('الجدول الدراسي','رتّب حصصك خلال الأسبوع حسب المادة واليوم والوقت واللون.',`
+      <div class="two-col">
+        <div class="tool-card reveal-on-scroll">
+          <span class="badge">Study Schedule</span><h2>إضافة حصة للجدول</h2>
+          <div class="stack">
+            <div class="field"><label>عنوان المادة</label><input id="schTitle" maxlength="120" placeholder="مثال: رياضيات — الوحدة الثالثة"></div>
+            <div class="field"><label>اليوم</label><select id="schDay">${DAYS.map((d,i)=>`<option value="${i}">${d}</option>`).join('')}</select></div>
+            <div class="form-grid">
+              <div class="field"><label>من</label><input id="schStart" type="time" value="08:00"></div>
+              <div class="field"><label>إلى</label><input id="schEnd" type="time" value="09:00"></div>
+            </div>
+            <div class="field"><label>لون الجدول</label><div class="color-palette">${COLORS.map((c,i)=>`<button type="button" class="color-swatch ${i===0?'active':''}" data-color="${c}" style="--sw:${c}" aria-label="لون ${i+1}"></button>`).join('')}</div></div>
+            <button class="btn" id="addSchedule">+ إضافة للجدول</button>
+          </div>
+        </div>
+        <div class="tool-card reveal-on-scroll">
+          <span class="badge gray">${saved.length} حصة</span><h2>ملخص الأسبوع</h2>
+          <p>الحصص تُرتّب تلقائيًا حسب اليوم والوقت لتبقى خطتك واضحة طوال الأسبوع.</p>
+          <div class="schedule-mini">${DAYS.map((d,i)=>{const n=saved.filter(x=>x.day_of_week===i).length;return `<div><span>${d}</span><b>${n}</b></div>`}).join('')}</div>
+        </div>
+      </div>
+      <div class="section-head"><div><h2>جدولك الحالي</h2><p>اسحب بصرك على الأسبوع بسرعة وشوف كل حصة بوقتها.</p></div><button class="btn secondary small" id="clearSchedule" ${saved.length?'':'disabled'}>مسح الكل</button></div>
+      <div class="schedule-board">${DAYS.map((d,di)=>{
+        const entries=saved.filter(x=>x.day_of_week===di);
+        return `<section class="schedule-day reveal-on-scroll"><header><b>${d}</b><span>${entries.length}</span></header><div class="schedule-items">${entries.length?entries.map(x=>`<article class="schedule-entry" style="--entry:${x.color}"><div><strong>${safe(x.title)}</strong><small>${safe(x.start_time)} — ${safe(x.end_time)}</small></div><button class="schedule-delete" data-del-s="${x.id}" title="حذف">×</button></article>`).join(''):'<div class="schedule-empty">لا توجد حصص</div>'}</div></section>`
+      }).join('')}</div>`);
+    let color=COLORS[0];
+    $$('[data-color]').forEach(b=>b.onclick=()=>{$$('[data-color]').forEach(x=>x.classList.remove('active'));b.classList.add('active');color=b.dataset.color});
+    $('#addSchedule').onclick=()=>{
+      const title=$('#schTitle').value.trim(),day=Number($('#schDay').value),start=$('#schStart').value,end=$('#schEnd').value;
+      if(!title)return toast('يرجى إدخال عنوان المادة','error');
+      if(start&&end&&start>=end)return toast('وقت النهاية يجب أن يكون بعد البداية','error');
+      saved.push({id:uid(),title,day_of_week:day,start_time:start||'08:00',end_time:end||'09:00',color});
+      localStorage.setItem('sm_schedule',JSON.stringify(saved));toast('تمت إضافة الحصة');schedule()
+    };
+    $$('[data-del-s]').forEach(b=>b.onclick=()=>{saved=saved.filter(x=>String(x.id)!==String(b.dataset.delS));localStorage.setItem('sm_schedule',JSON.stringify(saved));schedule()});
+    $('#clearSchedule').onclick=()=>{if(confirm('مسح كامل الجدول؟')){localStorage.removeItem('sm_schedule');schedule()}};
+    initDynamicMotion()
+  }
+  let timerInt=null,running=false;
+  const TIMER_MODES={focus:{label:'تركيز',minutes:25},short:{label:'استراحة قصيرة',minutes:5},long:{label:'استراحة طويلة',minutes:15}};
+  let timerMode=localStorage.getItem('sm_timer_mode')||'focus';
+  if(!TIMER_MODES[timerMode])timerMode='focus';
+  let seconds=Number(localStorage.getItem('sm_timer_seconds'));
+  if(!Number.isFinite(seconds)||seconds<0)seconds=TIMER_MODES[timerMode].minutes*60;
+  let completed=Number(localStorage.getItem('sm_timer_completed')||0);
+
+  function timer(){
+    const mode=TIMER_MODES[timerMode];
+    page('مؤقت الدراسة','نظّم وقتك بجلسات تركيز واستراحات قصيرة وطويلة بطريقة Pomodoro.',`
+      <div class="timer-shell">
+        <div class="timer-tabs">${Object.entries(TIMER_MODES).map(([id,m])=>`<button class="timer-tab ${id===timerMode?'active':''}" data-tmode="${id}">${m.label}</button>`).join('')}</div>
+        <div class="timer-ring" id="timerRing"><div class="timer-display" id="timerDisplay"></div><small>${mode.label}</small></div>
+        <div class="toolbar" style="justify-content:center"><button class="btn" id="startTimer">${running?'إيقاف مؤقت':'ابدأ الجلسة'}</button><button class="btn secondary" id="resetTimer">إعادة</button></div>
+        <div class="timer-session-info"><span>جلسات تركيز مكتملة</span><strong>${completed}</strong></div>
+        <p class="small-muted" style="text-align:center">يمكنك التنقل داخل المنصة وسيستمر المؤقت معك.</p>
+      </div>`);
+    updateTimer();
+    $$('[data-tmode]').forEach(b=>b.onclick=()=>{if(timerInt)clearInterval(timerInt);timerInt=null;running=false;timerMode=b.dataset.tmode;seconds=TIMER_MODES[timerMode].minutes*60;localStorage.setItem('sm_timer_mode',timerMode);localStorage.setItem('sm_timer_seconds',seconds);timer()});
+    $('#startTimer').onclick=()=>{
+      if(timerInt){clearInterval(timerInt);timerInt=null;running=false;timer();return}
+      running=true;timerInt=setInterval(()=>{
+        seconds=Math.max(0,seconds-1);localStorage.setItem('sm_timer_seconds',seconds);updateTimer();
+        if(seconds<=0){clearInterval(timerInt);timerInt=null;running=false;if(timerMode==='focus'){completed++;localStorage.setItem('sm_timer_completed',completed)}toast(timerMode==='focus'?'انتهت جلسة التركيز 👏':'انتهت الاستراحة — جاهز ترجع؟');timer()}
+      },1000);timer()
+    };
+    $('#resetTimer').onclick=()=>{if(timerInt)clearInterval(timerInt);timerInt=null;running=false;seconds=TIMER_MODES[timerMode].minutes*60;localStorage.setItem('sm_timer_seconds',seconds);timer()}
+  }
+  function updateTimer(){
+    const e=$('#timerDisplay');if(e)e.textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
+    const ring=$('#timerRing');if(ring){const total=TIMER_MODES[timerMode].minutes*60,p=Math.max(0,Math.min(1,seconds/total));ring.style.setProperty('--progress',`${p*360}deg`)}
+  }
+  function normalizeOriginal(raw){
+    const arr=Array.isArray(raw)?raw:(Array.isArray(raw?.questions)?raw.questions:[]);
+    const strip=v=>String(v??'').replace(/^\s*[أ-يA-Za-z]\s*[\)\.\-:]\s*/, '').trim();
+    const letters=['أ','ب','ج','د','هـ','ه','و'];
+    const out=[];
+    for(const q of arr){
+      if(!q||!q.question||!q.options)continue;
+      let options=[],answer=null;
+      if(Array.isArray(q.options)){
+        options=q.options.map(String);
+        if(typeof q.correctAnswer==='number')answer=options[q.correctAnswer]??null;
+        else if(typeof q.correctAnswer==='string'){
+          const a=q.correctAnswer.trim();
+          answer=options.find(o=>o===a||strip(o)===a)||a;
+        }else if(typeof q.answer==='number')answer=options[q.answer]??null;
+        else if(typeof q.answer==='string'){
+          const a=q.answer.trim(),li=letters.indexOf(a);
+          answer=li>=0&&li<options.length?options[li]:(options.find(o=>o===a||strip(o)===a)||a);
+        }
+      }else if(typeof q.options==='object'){
+        const keys=Object.keys(q.options);options=keys.map(k=>String(q.options[k]));
+        if(typeof q.answer==='string'){
+          const a=q.answer.trim();answer=q.options[a]!==undefined?String(q.options[a]):(options.find(o=>o===a)||a);
+        }else if(typeof q.correctAnswer==='string'){
+          const a=q.correctAnswer.trim();answer=options.find(o=>o===a||strip(o)===a)||a;
+        }else if(typeof q.correctAnswer==='number')answer=options[q.correctAnswer]??null;
+      }
+      if(answer!=null&&options.length>=2)out.push({question:String(q.question),options,answer:String(answer)});
+    }
+    return out;
+  }
+  async function loadOriginalQuiz(id,file){
+    if(originalCache[id])return originalCache[id];
+    const cacheKey='sm_base_quiz_'+id;
+    try{const saved=JSON.parse(localStorage.getItem(cacheKey)||'null');if(Array.isArray(saved)&&saved.length){originalCache[id]=saved;return saved}}catch{}
+    const candidates=[`data/quizzes/${file}`,(cfg.ORIGINAL_QUIZ_BASE||'')+file].filter(Boolean);
+    let lastError=null;
+    for(const url of candidates){
+      try{
+        const r=await fetch(url,{cache:'force-cache'});if(!r.ok)throw new Error(String(r.status));
+        const q=normalizeOriginal(await r.json());if(!q.length)throw new Error('empty');
+        originalCache[id]=q;try{localStorage.setItem(cacheKey,JSON.stringify(q))}catch{}
+        return q;
+      }catch(e){lastError=e}
+    }
+    throw lastError||new Error('quiz unavailable');
+  }
+  async function warmQuizCache(){
+    if(!navigator.onLine)return;
+    for(const [id,,file] of originalQuizManifest){if(localStorage.getItem('sm_base_quiz_'+id))continue;try{await loadOriginalQuiz(id,file)}catch{}}
+  }
+  const quizIcons={it:'⌘',agriculture:'⌁',hospitality:'◇',business:'▥',art:'✦',construction:'▦',engineering:'⚙','creative-media':'◈',tourism:'⌖',beauty:'✧',healthcare:'✚'};
+  async function quizzes(){
+    page('الكويزات','اختبارات BTEC مرتبة حسب التخصص.',loading());
+    let custom=[];try{custom=(await db.list('quizzes')).filter(x=>x.is_published!==false)}catch{}
+    const baseHtml=originalQuizManifest.map(([id,title,file])=>`<button class="quiz-card feature-card" data-original-quiz="${id}" data-file="${file}" data-title="${safe(title)}"><div class="quiz-card-icon">${quizIcons[id]||'?'}</div><div><h3>${safe(title)}</h3><p>اختبار شامل للتخصص</p></div><span class="quiz-card-arrow">←</span></button>`).join('');
+    const customHtml=custom.map(q=>{const questions=q.payload?.questions||[];return `<button class="quiz-card feature-card" data-custom-quiz="${q.id}"><div class="quiz-card-icon">+</div><div><h3>${safe(q.title)}</h3><p>${questions.length} سؤال${q.category?` • ${safe(q.category)}`:''}</p></div><span class="quiz-card-arrow">←</span></button>`}).join('');
+    page('الكويزات','اختبارات BTEC مرتبة حسب التخصص.',`<div class="quiz-catalog"><div class="quiz-catalog-head"><span class="mini-label">BTEC QUIZZES</span><h2>اختر تخصصك وابدأ الاختبار</h2></div><div class="quiz-grid">${baseHtml}${customHtml}</div></div>`);
+    $$('[data-original-quiz]').forEach(b=>b.onclick=async()=>{const p=b.querySelector('p'),old=p.textContent;b.disabled=true;p.textContent='جاري تجهيز الأسئلة...';try{const qs=await loadOriginalQuiz(b.dataset.originalQuiz,b.dataset.file);quizRun(b.dataset.title,qs,'base:'+b.dataset.originalQuiz)}catch{toast('تعذر تحميل الأسئلة الآن. أعد المحاولة.','error');b.disabled=false;p.textContent=old}});
+    $$('[data-custom-quiz]').forEach(b=>b.onclick=async()=>{const q=(await db.list('quizzes')).find(x=>String(x.id)===String(b.dataset.customQuiz));if(q)quizRun(q.title,q.payload?.questions||[],'custom:'+q.id)})
+  }
+  async function saveQuizAttempt(quizKey,title,score,total){
+    const row={id:uid(),student_key:ANON_STUDENT_KEY,quiz_key:String(quizKey||title),quiz_title:String(title||'كويز'),score:Number(score||0),total:Number(total||0),percentage:total?Math.round(score/total*100):0,created_at:nowIso()};
+    const arr=local.read('quiz_attempts');arr.unshift(row);local.write('quiz_attempts',arr);
+  }
+  function quizRun(title,questions,quizKey='quiz'){
+    if(!questions?.length)return toast('لا توجد أسئلة في هذا الكويز','error');
+    let current=0,score=0,locked=false;
+    const draw=()=>{
+      const q=questions[current];
+      page(title,`السؤال ${current+1} من ${questions.length}`,`<div class="quiz-progress"><span style="width:${((current+1)/questions.length)*100}%"></span></div><div class="quiz-question"><h2>${safe(q.question||q.q)}</h2><div class="quiz-options">${q.options.map((o,i)=>`<button class="quiz-option" data-opt="${i}">${safe(o)}</button>`).join('')}</div><div id="quizNext" style="margin-top:14px"></div></div>`);
+      $$('[data-opt]').forEach(b=>b.onclick=()=>{
+        if(locked)return;locked=true;
+        const selected=q.options[+b.dataset.opt],answer=typeof q.answer==='number'?q.options[q.answer]:q.answer;
+        if(selected===answer){score++;b.classList.add('correct')}else{b.classList.add('wrong');const idx=q.options.findIndex(o=>o===answer);if(idx>=0)$(`[data-opt="${idx}"]`)?.classList.add('correct')}
+        $('#quizNext').innerHTML=`<button class="btn">${current===questions.length-1?'عرض النتيجة':'التالي'}</button>`;
+        $('#quizNext .btn').onclick=async()=>{
+          current++;
+          if(current>=questions.length){
+            const pct=Math.round(score/questions.length*100);await saveQuizAttempt(quizKey,title,score,questions.length);
+            page('نتيجة الكويز',title,`<div class="tool-card quiz-result-card"><span class="badge gold">تم حفظ النتيجة</span><div class="quiz-result-score">${pct}%</div><div class="quiz-result-meta"><div><b>${score}</b><span>إجابة صحيحة</span></div><div><b>${questions.length-score}</b><span>إجابة غير صحيحة</span></div><div><b>${questions.length}</b><span>إجمالي الأسئلة</span></div></div><div class="toolbar" style="justify-content:center;margin-top:22px"><button class="btn" data-go="quizzes">العودة للكويزات</button><button class="btn secondary" id="retryQuiz">إعادة المحاولة</button></div></div>`);
+            bindGo();$('#retryQuiz').onclick=()=>quizRun(title,questions,quizKey)
+          }else{locked=false;draw()}
+        }
+      })
+    };
+    draw()
+  }
+
+  async function fileToAttachment(file){
+    if(file.size>10*1024*1024)throw new Error('حجم الملف أكبر من 10MB');
+    const name=file.name.toLowerCase();
+    if(file.type.startsWith('image/')){
+      const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)});
+      return {type:'image',name:file.name,mime:file.type,dataUrl};
+    }
+    if(file.type.startsWith('text/')||/\.(txt|md|csv)$/.test(name)){
+      return {type:'file',name:file.name,mime:file.type||'text/plain',text:(await file.text()).slice(0,50000)};
+    }
+    if(name.endsWith('.pdf')){
+      if(!window.pdfjsLib)throw new Error('مكتبة PDF غير متاحة. تحقق من الاتصال بالإنترنت.');
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const buf=await file.arrayBuffer();
+      const doc=await window.pdfjsLib.getDocument({data:buf}).promise;
+      let out='';
+      for(let i=1;i<=doc.numPages;i++){
+        const pg=await doc.getPage(i), content=await pg.getTextContent();
+        out+=content.items.map(it=>it.str).join(' ')+'\n\n';
+        if(out.length>50000)break;
+      }
+      return {type:'file',name:file.name,mime:'application/pdf',text:out.slice(0,50000)};
+    }
+    if(name.endsWith('.docx')){
+      if(!window.mammoth)throw new Error('مكتبة DOCX غير متاحة. تحقق من الاتصال بالإنترنت.');
+      const r=await window.mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
+      return {type:'file',name:file.name,mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',text:String(r.value||'').slice(0,50000)};
+    }
+    if(/\.(xlsx|xls)$/.test(name)){
+      if(!window.XLSX)throw new Error('مكتبة Excel غير متاحة. تحقق من الاتصال بالإنترنت.');
+      const wb=window.XLSX.read(await file.arrayBuffer(),{type:'array'});let out='';
+      for(const sn of wb.SheetNames){out+=`### ${sn}\n`+window.XLSX.utils.sheet_to_csv(wb.Sheets[sn])+'\n\n';if(out.length>50000)break;}
+      return {type:'file',name:file.name,mime:file.type||'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',text:out.slice(0,50000)};
+    }
+    throw new Error('الأنواع المدعومة: صور، PDF، DOCX، XLSX/XLS، TXT، CSV، MD');
+  }
+  function localStudyReply(text){
+    const q=String(text||'').toLowerCase();
+    if(/pass|merit|distinction|معيار|criteria/.test(q))return 'ابدأ بتحديد Assessment Criteria المطلوب، ثم حوّل كل معيار إلى قائمة Evidence واضحة. Pass يركز على تحقيق المتطلبات الأساسية، Merit يحتاج شرحًا وتطبيقًا أعمق، وDistinction يحتاج تحليلًا وتقييمًا مدعومًا بالأدلة.';
+    if(/lab|لاب|task|مهمة|assignment/.test(q))return 'قسّم المطلوب إلى أربع خطوات: 1) حدّد فعل السؤال مثل Explain أو Evaluate، 2) استخرج المطلوب تسليمه، 3) اربط كل جزء بالـEvidence، 4) راجع إجابتك مقابل المعيار قبل التسليم. إذا أرسلت نص المهمة أساعدك بتفكيكها خطوة بخطوة.';
+    if(/explain|اشرح/.test(q))return 'لما يطلب منك Explain لا تكتفِ بالتعريف؛ وضّح كيف ولماذا، واربط السبب بالنتيجة باستخدام كلمات مثل: لأن، لذلك، وهذا يؤدي إلى.';
+    return 'اكتب اسم الوحدة أو نص الـTask أو السؤال الذي تعمل عليه، وسأساعدك في فهم المطلوب وترتيب خطوات الحل والـEvidence المناسب.';
+  }
+
+  const routes={home,'about-btec':aboutBtec,glossary:glossaryPage,explanations,calculator,schedule,timer,courses,lectures,labs,tasks:tasksPage,files:resourcesPage,quizzes};
+  async function render(){stopActiveVideo();const raw=(location.hash||'#home').slice(1)||'home',parts=raw.split('/'),name=parts[0],navName=name==='course'||name==='lecture'?'courses':name;document.body.dataset.route=navName;syncNav(navName);$('#navPills').classList.remove('open');$('#navMore')?.classList.remove('open');window.scrollTo({top:0,behavior:'auto'});try{if(name==='course')await courseDetail(decodeURIComponent(parts.
