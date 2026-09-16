@@ -1,0 +1,5 @@
+slice(1).join('/')));else if(name==='lecture')await lectureDetail(parts[1]);else await (routes[name]||home)()}catch(e){console.error(e);page('حدث خطأ','',`<div class="empty">تعذر عرض الصفحة. حاول تحديث الموقع.</div>`)}bindGo();initDynamicMotion()}
+  warmQuizCache();
+  if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+  render();
+})();
