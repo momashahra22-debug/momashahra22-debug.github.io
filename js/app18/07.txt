@@ -1,0 +1,111 @@
+عريف بنظام BTEC','شرح عملي ومتكامل للنظام وطريقة التقييم وكيف تتعامل مع الـAssignments.',`
+      <div class="two-col">
+        <article class="tool-card reveal-on-scroll">
+          <span class="badge">BTEC</span><h2>ما هو نظام BTEC؟</h2>
+          <p>BTEC مسار تعليمي مهني وتطبيقي يركز على بناء المهارة من خلال المشاريع والمهمات العملية، وليس الحفظ فقط. الطالب يثبت تحقيقه لمخرجات التعلم عن طريق Evidence واضح مرتبط بمعايير تقييم محددة.</p>
+          <div class="notice" style="margin-top:16px"><b>الفكرة الأساسية:</b> اقرأ الـAssignment Brief → افهم الـTask → حدد Assessment Criteria → جهّز Evidence يثبت تحقيق المعيار.</div>
+        </article>
+        <article class="tool-card reveal-on-scroll">
+          <span class="badge gold">Pearson Assessment</span><h2>سلم التقدير</h2>
+          <div class="stack">
+            <div class="notice"><b class="grade-pass">Pass (P)</b> — تحقق المتطلبات الأساسية للمعيار.</div>
+            <div class="notice"><b class="grade-merit">Merit (M)</b> — تطبيق وشرح وتحليل بمستوى أعلى.</div>
+            <div class="notice"><b class="grade-distinction">Distinction (D)</b> — تحليل وتقييم وتبرير أعمق ومدعوم.</div>
+          </div>
+        </article>
+      </div>
+      <div class="section-head"><div><h2>كيف تقرأ أي Assignment Brief؟</h2><p>لا تبدأ بالكتابة قبل ما تفكك المطلوب.</p></div></div>
+      <div class="grid">
+        ${[
+          ['01','Learning Aim','اعرف هدف التعلم الذي تغطيه المهمة، لأنه يوضح المهارة أو المعرفة المطلوب إثباتها.'],
+          ['02','Task','اقرأ كل Task كطلب مستقل: ماذا يريد؟ ما المخرج؟ وما الفعل المستخدم؟'],
+          ['03','Command Verb','الكلمة مثل Describe / Explain / Analyse / Evaluate تحدد عمق الإجابة المطلوب.'],
+          ['04','Assessment Criteria','اربط كل جزء من شغلك بمعيار P أو M أو D حتى تعرف لماذا تكتب هذه الفقرة.'],
+          ['05','Evidence','حدد الدليل المطلوب: تقرير، عرض، تحليل، جدول، تصميم، كود، صورة، تجربة أو ملف.'],
+          ['06','Review','قبل التسليم راجع المعايير واحدًا واحدًا وتأكد أن الـEvidence موجود وواضح.']
+        ].map(([n,t,d])=>`<article class="feature-card reveal-on-scroll"><div class="iconbox">${n}</div><h3>${t}</h3><p>${d}</p></article>`).join('')}
+      </div>
+      <div class="section-head"><div><h2>من الوصف إلى الامتياز</h2><p>نفس الموضوع يمكن كتابته بمستويات مختلفة.</p></div></div>
+      <div class="tool-card">
+        <div class="table-wrap"><table><thead><tr><th>المستوى</th><th>ما المتوقع؟</th><th>كيف تعرف أنك وصلت له؟</th></tr></thead><tbody>
+          <tr><td><b class="grade-pass">Pass</b></td><td>تحديد، وصف، عرض معلومات صحيحة.</td><td>الإجابة تغطي المطلوب الأساسي بشكل واضح ومباشر.</td></tr>
+          <tr><td><b class="grade-merit">Merit</b></td><td>شرح العلاقات والأسباب والنتائج والتطبيق.</td><td>لا تذكر المعلومة فقط؛ تشرح كيف ولماذا وما أثرها.</td></tr>
+          <tr><td><b class="grade-distinction">Distinction</b></td><td>تحليل، مقارنة، تقييم، تبرير وحكم نهائي.</td><td>تعرض الأدلة والبدائل ونقاط القوة والضعف ثم تبرر استنتاجك.</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="section-head"><div><h2>مسار عملي لأي مهمة</h2></div></div>
+      <div class="grid">${[
+        ['1','افهم المطلوب','حدد الفعل، الموضوع، المخرج، والمعيار.'],
+        ['2','خطط للـEvidence','رتب ما ستقدمه لكل معيار قبل الكتابة.'],
+        ['3','نفّذ واربط','كل فقرة أو جدول أو صورة لازم تخدم معيارًا واضحًا.'],
+        ['4','حلل بدل الحشو','اربط السبب بالنتيجة واستخدم أمثلة واقعية.'],
+        ['5','وثّق المصادر','احتفظ بالمراجع والروابط حسب تعليمات المدرسة.'],
+        ['6','راجع قبل التسليم','افتح الـBrief وعلّم على كل Criterion تم تحقيقه.']
+      ].map(([i,t,d])=>`<article class="feature-card reveal-on-scroll"><div class="iconbox">${i}</div><h3>${t}</h3><p>${d}</p></article>`).join('')}</div>
+      <div class="section-head"><div><h2>الصورة الكاملة للتقييم</h2><p>مصطلحات لازم تكون واضحة قبل أي تسليم.</p></div></div>
+      <div class="two-col">
+        <article class="tool-card reveal-on-scroll"><span class="badge">Assessment</span><h3>التقييم داخل الوحدات</h3><p>تختلف طريقة التقييم حسب الوحدة والمؤهل، وقد تشمل مهمات عملية وتقارير وعروضًا ومشاريع أو تقييمات أخرى. المرجع النهائي دائمًا هو الـAssignment Brief ومعايير التقييم المعتمدة لوحدتك.</p><div class="notice" style="margin-top:14px">لا تعتمد على طول الإجابة؛ اعتمد على جودة الـEvidence ومدى مطابقته للمعيار.</div></article>
+        <article class="tool-card reveal-on-scroll"><span class="badge gold">Quality</span><h3>الجودة والمراجعة</h3><p>يحتاج العمل إلى وضوح، ترابط، أدلة مناسبة، ومراجع عند الحاجة. قبل التسليم راجع كل معيار وتأكد أن القارئ يستطيع معرفة أين وكيف حققته.</p><div class="notice" style="margin-top:14px">أفضل طريقة للمراجعة: Criterion → Evidence → مكانه في العمل → هل يثبت المطلوب فعلًا؟</div></article>
+      </div>
+    `);initDynamicMotion()
+  }
+  function explanations(){page('الشروحات','شرح الأساسيات التي يحتاجها طالب BTEC أثناء تنفيذ المهمات.',`<div class="grid">${[
+    ['كيف أقرأ الـTask؟','ابدأ بالفعل المطلوب مثل Describe أو Explain أو Analyse أو Evaluate، ثم حدد الموضوع والمخرج المطلوب.'],
+    ['كيف أبني Evidence؟','اجعل كل فقرة أو جدول أو صورة أو تحليل يخدم معيارًا واضحًا، ولا تضف محتوى لا يرتبط بالمطلوب.'],
+    ['الفرق بين Explain و Analyse','Explain يوضح كيف ولماذا، بينما Analyse يفكك العلاقات والأسباب والنتائج ويقارن بينها.'],
+    ['كيف أوصل إلى Distinction؟','لا يكفي الوصف؛ تحتاج تحليلًا وتقييمًا مدعومًا بأمثلة ومبررات وربطًا واضحًا بالمعيار.'],
+    ['المراجع والمصادر','استخدم مصادر موثوقة وسجل اسم المصدر والرابط وتاريخ الاطلاع وفق تعليمات مدرستك.'],
+    ['مراجعة ما قبل التسليم','راجع كل Assessment Criterion واحدًا واحدًا وتأكد أن الـEvidence يثبت تحقيقه بوضوح.']
+  ].map(([t,d])=>`<div class="feature-card"><div class="iconbox">✓</div><h3>${safe(t)}</h3><p>${safe(d)}</p></div>`).join('')}</div>`)}
+  function glossaryPage(){
+    const cards=()=>glossary.map((x,i)=>`<article class="feature-card glossary-card reveal-on-scroll" data-grade="${x.grade}" data-term="${safe((x.verb+' '+x.ar+' '+x.def+' '+x.defAr).toLowerCase())}" style="transition-delay:${Math.min(i*14,180)}ms">
+      <div class="term-head"><span class="badge ${x.grade==='distinction'?'gold':''}">${x.grade.toUpperCase()}</span><span class="small-muted">${i+1}/${glossary.length}</span></div>
+      <h3>${safe(x.verb)} <span style="color:#6f8190">|</span> ${safe(x.ar)}</h3>
+      <p>${safe(x.def)}</p><div class="arabic-def">${safe(x.defAr)}</div>
+    </article>`).join('');
+    page('دليل مصطلحات BTEC',`دليل شامل لـ ${glossary.length} من مصطلحات الأوامر مع شرح واضح بالعربي.`,`
+      <div class="search-row"><input id="glossSearch" placeholder="ابحث: Explain، حلل، Evaluate..."></div>
+      <div class="glossary-toolbar"><button class="filter-chip active" data-gf="all">الكل (${glossary.length})</button><button class="filter-chip" data-gf="pass">Pass</button><button class="filter-chip" data-gf="merit">Merit</button><button class="filter-chip" data-gf="distinction">Distinction</button></div>
+      <div class="grid" id="glossGrid">${cards()}</div>`);
+    let filter='all';
+    const apply=()=>{const q=$('#glossSearch').value.trim().toLowerCase();$$('[data-term]').forEach(x=>x.classList.toggle('hidden',(filter!=='all'&&x.dataset.grade!==filter)||(q&&!x.dataset.term.includes(q))))};
+    $('#glossSearch').oninput=apply;
+    $$('[data-gf]').forEach(b=>b.onclick=()=>{$$('[data-gf]').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.gf;apply()});
+    initDynamicMotion()
+  }
+  const CALC_STAGES={
+    first:{name:'الأول ثانوي',specializations:{
+      'تكنولوجيا المعلومات':[['أنظمة التكنولوجيا',120],['ألعاب المتقدم',60],['تطبيقات المتقدم',60],['ويب المتقدم',60],['الدعم الفني',60]],
+      'إدارة الأعمال':[['استكشاف الأعمال',90],['البحث والتخطيط لحملة تسويقية',90],['تمويل الأعمال',90],['إدارة الفعاليات',90]],
+      'التجميل':[['تدريب صالون التجميل المهني',60],['الصحة والتغذية',60],['الأساليب المتقدمة للعناية بالأظافر وتجميلها',60],['علاجات البشرة المتقدمة',60],['المكياج الإبداعي وفن الحناء',60],['تلوين وتفتيح الشعر وتقنيات التمليسات',60],['نظرة عامة على البلوثيربي',90]],
+      'الهندسة':[['تصميم وتصنيع المنتجات في الهندسة',120],['المبادئ الميكانيكية',60],['المبادئ الكهربائية والإلكترونية',60],['مبادئ التجارة والجودة التطبيقية في الهندسة',60],['تقديم العمليات بأمان كفريق في الهندسة',60]]
+    }},
+    tawjihi:{name:'التوجيهي',specializations:{
+      'تكنولوجيا المعلومات':[['الأمن السيبراني',120],['البرمجة',90],['إدارة المشاريع',90],['ذكاء اصطناعي',60]],
+      'إدارة الأعمال':[['مبادئ الإدارة',60],['اتخاذ قرارات الأعمال',120],['الموارد البشرية',60],['دراسة خدمة العملاء',60],['أخلاقيات الأعمال',60]],
+      'التجميل':[['قص الشعر والتجميل والمشورة',90],['التدليك والعلاج بالروائح',90],['بدء مشروع وإدارته',90]],
+      'الهندسة — الكهرباء':[['الأجهزة والدوائر الإلكترونية',60],['القياس والاختبار الإلكتروني للدوائر',60],['الدوائر الإلكترونية للمواد',60],['الأنظمة الإلكترونية التناظرية والرقمية',60],['المتحكمات المنطقية القابلة للبرمجة PLC',60],['الروبوتات الصناعية',60]],
+      'الهندسة — الميكانيك':[['السلوك الميكانيكي للمواد المعدنية',60],['السلوك الميكانيكي للمواد غير المعدنية',60],['صيانة الآلات الميكانيكية',60],['تقنية اللحام',60],['المعالجة الثانوية بالتصنيع',60],['عمليات التشغيل باستخدام التحكم الرقمي بالحاسوب CNC',60]],
+      'الهندسة — تكنولوجيا السيارات':[['أنظمة التعليق والتوجيه والبدء في المركبات الخفيفة',60],['تشغيل أنظمة نقل الحركة في المركبات الخفيفة وصيانتها',60],['محركات المركبات الكهربائية والهجينة',60],['تشغيل أنظمة الاتصال الإلكترونية في المركبات واختبارها',60],['أنظمة نقل الحركة الكهربائية',60],['النقل الكهربائي',60]]
+    }}
+  };
+  const SHARED=[['اللغة العربية',100,10],['اللغة الإنجليزية',100,10],['التربية الإسلامية',60,6],['تاريخ الأردن',40,4]];
+  const GP={U:0,P:60,M:80,D:100};
+  function calculator(){
+    const state={stage:null,mode:null,firstSpec:null,tawSpec:null,firstGrades:{},tawGrades:{},shared:{}};
+    const subjectSet=(stage,spec)=>CALC_STAGES[stage].specializations[spec]||[];
+    const specialtyResult=(subjects,grades)=>{let pts=0,hrs=0;subjects.forEach(([n,h])=>{pts+=(GP[grades[n]]||0)*h;hrs+=h});const avg100=hrs?pts/hrs:0;return {avg100,avg35:avg100*.35}};
+    const sharedResult=()=>SHARED.reduce((sum,[n,max,w])=>sum+((Number(state.shared[n])||0)/max)*w,0);
+    const drawStage=()=>{page('حاسبة المعدل','احسب معدل الأول ثانوي والتوجيهي والمواد المشتركة أو المعدل الكامل.',`<div class="calc-stage reveal"><div class="tool-card calc-step"><span class="badge gold">الخطوة الأولى</span><h2>اختر المرحلة الدراسية</h2><div class="choice-grid"><button class="choice" data-stage="first"><strong>🎓 الأول ثانوي</strong><small>احسب معدل تخصص الأول ثانوي من 35</small></button><button class="choice" data-stage="tawjihi"><strong>🏆 التوجيهي</strong><small>تخصص فقط، مشترك فقط، أو المعدل الكامل</small></button></div></div></div>`);$$('[data-stage]').forEach(b=>b.onclick=()=>{state.stage=b.dataset.stage;if(state.stage==='tawjihi')drawMode();else drawSpec('first','single')})};
+    const drawMode=()=>{page('حاسبة المعدل','التوجيهي — اختر نوع الحساب.',`<div class="calc-stage reveal"><div class="tool-card calc-step"><span class="badge">نوع الحساب</span><h2>ماذا تريد أن تحسب؟</h2><div class="stack"><button class="choice" data-mode="spec-only"><strong>🎯 حساب معدل التوجيهي — تخصص فقط</strong><small>اختر تخصصك وأدخل تقديرات المواد — النتيجة من 35</small></button><button class="choice" data-mode="shared-only"><strong>📚 حساب المواد المشتركة فقط</strong><small>العربي والإنجليزي والدين والتاريخ — النتيجة من 30</small></button><button class="choice" data-mode="full-calc"><strong>🏆 حساب المعدل الكامل</strong><small>الأول ثانوي 35 + التوجيهي 35 + المشترك 30 = 100</small></button></div><button class="btn secondary" id="backStage" style="margin-top:16px">رجوع</button></div></div>`);$('#backStage').onclick=drawStage;$$('[data-mode]').forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;if(state.mode==='shared-only')drawShared('shared-only');else if(state.mode==='full-calc')drawSpec('first','full-first');else drawSpec('tawjihi','single')})};
+    const drawSpec=(stage,nextKind)=>{const specs=Object.keys(CALC_STAGES[stage].specializations);page('حاسبة المعدل',`${CALC_STAGES[stage].name} — اختر التخصص`, `<div class="calc-stage reveal"><div class="tool-card calc-step"><span class="badge">التخصص</span><h2>اختر التخصص</h2><div class="choice-grid">${specs.map(x=>`<button class="choice" data-spec="${safe(x)}"><strong>${safe(x)}</strong><small>اضغط للمتابعة</small></button>`).join('')}</div><button class="btn secondary" id="backFromSpec" style="margin-top:16px">رجوع</button></div></div>`);$('#backFromSpec').onclick=()=>stage==='first'&&state.mode==='full-calc'?drawMode():(state.stage==='tawjihi'?drawMode():drawStage());$$('[data-spec]').forEach(b=>b.onclick=()=>{if(stage==='first')state.firstSpec=b.dataset.spec;else state.tawSpec=b.dataset.spec;drawGrades(stage,nextKind)})};
+    const drawGrades=(stage,nextKind)=>{const spec=stage==='first'?state.firstSpec:state.tawSpec, grades=stage==='first'?state.firstGrades:state.tawGrades, subjects=subjectSet(stage,spec);page('حاسبة المعدل',`${CALC_STAGES[stage].name} — ${spec}`,`<div class="calc-stage reveal"><div class="tool-card calc-step"><span class="badge">تقديرات BTEC</span><h2>اختر تقدير كل مادة</h2><div class="grade-matrix">${subjects.map(([n,h])=>`<div class="grade-line"><div><b>${safe(n)}</b><div class="small-muted">${h} ساعة</div></div><div class="grade-buttons">${['U','P','M','D'].map(g=>`<button class="grade-btn ${grades[n]===g?'active':''}" data-sub="${safe(n)}" data-grade="${g}">${g}</button>`).join('')}</div></div>`).join('')}</div><div class="notice" style="margin-top:14px">U = 0 • P = 60 • M = 80 • D = 100، ويتم ترجيح النتيجة حسب ساعات كل مادة.</div><div class="toolbar" style="margin-top:18px"><button class="btn" id="nextGrades">${nextKind==='full-first'?'التالي: تخصص التوجيهي':nextKind==='full-taw'?'التالي: المواد المشتركة':'احسب النتيجة'}</button><button class="btn secondary" id="backGrades">رجوع</button></div></div></div>`);$$('[data-sub]').forEach(b=>b.onclick=()=>{grades[b.dataset.sub]=b.dataset.grade;$$(`[data-sub="${CSS.escape(b.dataset.sub)}"]`).forEach(x=>x.classList.remove('active'));b.classList.add('active')});$('#backGrades').onclick=()=>drawSpec(stage,nextKind);$('#nextGrades').onclick=()=>{if(Object.keys(grades).length<subjects.length)return toast('اختر تقدير كل المواد أولاً','error');if(nextKind==='full-first')drawSpec('tawjihi','full-taw');else if(nextKind==='full-taw')drawShared('full');else drawSpecialtyResult(stage)}};
+    const drawSpecialtyResult=(stage)=>{const spec=stage==='first'?state.firstSpec:state.tawSpec,grades=stage==='first'?state.firstGrades:state.tawGrades,r=specialtyResult(subjectSet(stage,spec),grades);page('نتيجة التخصص',`${CALC_STAGES[stage].name} — ${spec}`,`<div class="calc-stage reveal"><div class="result-hero"><span class="badge">معدل التخصص</span><div class="result-number">${r.avg35.toFixed(2)}</div><p>من 35 • المتوسط الخام ${r.avg100.toFixed(2)}%</p><div class="toolbar" style="justify-content:center;margin-top:20px"><button class="btn" id="restartCalc">حساب جديد</button><button class="btn secondary" data-go="home">الرئيسية</button></div></div></div>`);bindGo();$('#restartCalc').onclick=calculator};
+    const drawShared=(kind)=>{page('حاسبة المعدل','المواد المشتركة — العربي والإنجليزي والتربية الإسلامية وتاريخ الأردن.',`<div class="calc-stage reveal"><div class="tool-card calc-step"><span class="badge gold">المواد المشتركة</span><h2>أدخل العلامات</h2><div class="form-grid">${SHARED.map(([n,max])=>`<div class="field"><label>${n} — من ${max}</label><input type="number" min="0" max="${max}" step="0.01" data-shared="${safe(n)}" value="${state.shared[n]??''}"></div>`).join('')}</div><div class="toolbar" style="margin-top:18px"><button class="btn" id="showSharedResult">${kind==='full'?'عرض المعدل الكامل':'احسب المواد المشتركة'}</button><button class="btn secondary" id="backShared">رجوع</button></div></div></div>`);$('#backShared').onclick=()=>kind==='full'?drawGrades('tawjihi','full-taw'):drawMode();$('#showSharedResult').onclick=()=>{let ok=true;$$('[data-shared]').forEach(i=>{const def=SHARED.find(x=>x[0]===i.dataset.shared),v=Number(i.value);if(i.value===''||!Number.isFinite(v)||v<0||v>def[1])ok=false;state.shared[i.dataset.shared]=v});if(!ok)return toast('أدخل علامات صحيحة للمواد المشتركة','error');kind==='full'?drawFullResult():drawSharedOnlyResult()}};
+    const drawSharedOnlyResult=()=>{const x=sharedResult();page('نتيجة المواد المشتركة','',`<div class="calc-stage reveal"><div class="result-hero"><span class="badge gold">المشترك</span><div class="result-number">${x.toFixed(2)}</div><p>من 30</p><div class="toolbar" style="justify-content:center"><button class="btn" id="restartCalc">حساب جديد</button></div></div></div>`);$('#restartCalc').onclick=calculator};
+    const drawFullResult=()=>{const a=specialtyResult(subjectSet('first',state.firstSpec),state.firstGrades),b=specialtyResult(subjectSet('tawjihi',state.tawSpec),state.tawGrades),c=sharedResult(),total=a.avg35+b.avg35+c;page('المعدل الكامل','الأول ثانوي + التوجيهي + المواد المشتركة',`<div class="calc-stage reveal"><div class="result-hero"><span class="badge gold">المعدل النهائي</span><div class="result-number">${total.toFixed(2)}%</div><div class="grid" style="margin-top:22px"><div class="feature-card"><h3>${a.avg35.toFixed(2)} / 35</h3><p>الأول ثانوي — ${safe(state.firstSpec)}</p></div><div class="feature-card"><h3>${b.avg35.toFixed(2)} / 35</h3><p>التوجيهي — ${safe(state.tawSpec)}</p></div><div class="feature-card"><h3>${c.toFixed(2)} / 30</h3><p>المواد المشتركة</p></div></div><div class="toolbar" style="justify-content:center;margin-top:20px"><button class="btn" id="restartCalc">حساب جديد</button><button class="btn secondary" data-go="home">الرئيسية</button></div></div></div>`);bindGo();$('#restartCalc').onclick=calculator};
+    drawStage();
+  }
+  function schedule(){
+    const DAYS=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+    const COLORS=['#6366f1','#14b8a6','#f59e0b','#ef4444','#8b5
