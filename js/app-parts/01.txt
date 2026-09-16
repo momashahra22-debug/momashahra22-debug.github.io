@@ -1,0 +1,133 @@
+(() => {
+  'use strict';
+  const $=(s,p=document)=>p.querySelector(s), $$=(s,p=document)=>[...p.querySelectorAll(s)];
+  const app=$('#app'), cfg=window.STUDYMATE_CONFIG||{};
+  const hasSupabase=Boolean(cfg.SUPABASE_URL&&cfg.SUPABASE_ANON_KEY&&window.supabase);
+  const sb=hasSupabase?window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY):null;
+  const safe=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const uid=()=>crypto?.randomUUID?.()||Math.random().toString(36).slice(2)+Date.now().toString(36);
+  const nowIso=()=>new Date().toISOString();
+  const toast=(msg,type='')=>{const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;$('#toastRoot').appendChild(el);setTimeout(()=>el.remove(),3200)};
+  const loading=()=>`<div class="loading"><div class="spinner"></div>جاري التحميل...</div>`;
+  const validUrl=u=>{try{const x=new URL(u);return ['http:','https:'].includes(x.protocol)}catch{return false}};
+
+  const seed={
+    courses:[],
+    lectures:[],
+    labs:[],
+    resources:[],
+    quizzes:[]
+  };
+  const local={
+    read(k){try{return JSON.parse(localStorage.getItem('sm_'+k))||structuredClone(seed[k]||[])}catch{return structuredClone(seed[k]||[])}},
+    write(k,v){localStorage.setItem('sm_'+k,JSON.stringify(v))}
+  };
+  ['courses','lectures','labs','resources','tasks','quizzes','lecture_progress','quiz_attempts','site_settings'].forEach(k=>{if(!localStorage.getItem('sm_'+k))local.write(k,seed[k]||[])});
+
+  // One-time cleanup of untouched sample rows from older local builds. User-edited rows are preserved.
+  if(!localStorage.getItem('sm_v7_cleaned')){
+    const filters={
+      resources:x=>!String(x.url||'').includes('example.com'),
+      labs:x=>!String(x.lab_url||'').includes('example.com/lab-1'),
+      quizzes:x=>String(x.id)!=='local-q1',
+      lectures:x=>{
+        const id=String(x.id||'');
+        if(id==='l1')return !(x.title==='مقدمة في BTEC وتقسيم الوحدات'&&String(x.youtube_url||'').includes('wr7eGVh_umM'));
+        if(id==='l2')return !(x.title==='كيف تفهم الـ Assessment Criteria'&&!String(x.youtube_url||'').trim()&&x.description==='شرح عملي لقراءة المطلوب من كل Task.');
+        return true;
+      }
+    };
+    for(const [table,filter] of Object.entries(filters))local.write(table,local.read(table).filter(filter));
+    localStorage.setItem('sm_v7_cleaned','1');
+  }
+
+  const originalQuizManifest=[
+    ['it','تكنولوجيا المعلومات','btec_it_data.json'],['agriculture','الزراعة','btec_agriculture_data.json'],['hospitality','الضيافة','hospitality_test.json'],['business','الأعمال','business_exam_200.json'],['art','الفن والتصميم','art_and_design.json'],['construction','البناء والإنشاءات','building_and_construction.json'],['engineering','الهندسة','Engineering.json'],['creative-media','الإعلام الإبداعي','Creative_Media_Quiz.json'],['tourism','السياحة والسفر','Tourism_and_Travel_Quiz.json'],['beauty','التجميل','Beauty_Specialty_Quiz.json'],['healthcare','الرعاية الصحية','healthcare_quiz.json']
+  ];
+  const originalCache={};
+
+  const db={
+    async list(table){
+      if(!hasSupabase)return local.read(table);
+      const {data,error}=await sb.from(table).select('*').order('created_at',{ascending:false});
+      if(error){console.error(error);throw error} return data||[];
+    },
+    async insert(table,row){
+      if(!hasSupabase){const a=local.read(table);const n={id:uid(),...row,created_at:nowIso()};a.unshift(n);local.write(table,a);return n}
+      const {data,error}=await sb.from(table).insert(row).select().single(); if(error)throw error;return data;
+    },
+    async update(table,id,row){
+      if(!hasSupabase){const a=local.read(table).map(x=>x.id===id?{...x,...row}:x);local.write(table,a);return a.find(x=>x.id===id)}
+      const {data,error}=await sb.from(table).update(row).eq('id',id).select().single();if(error)throw error;return data;
+    },
+    async remove(table,id){
+      if(!hasSupabase){local.write(table,local.read(table).filter(x=>x.id!==id));return}
+      const {error}=await sb.from(table).delete().eq('id',id);if(error)throw error;
+    }
+  };
+
+  // Student-facing site is intentionally account-free. Progress stays private in this browser.
+  const ANON_STUDENT_KEY='browser-local';
+  const studentKey=()=>ANON_STUDENT_KEY;
+  async function getProgress(lectureId=null){
+    return local.read('lecture_progress').filter(x=>x.student_key===ANON_STUDENT_KEY&&(!lectureId||String(x.lecture_id)===String(lectureId)));
+  }
+  async function touchLecture(lectureId,completed=null){
+    const arr=local.read('lecture_progress');
+    const i=arr.findIndex(x=>x.student_key===ANON_STUDENT_KEY&&String(x.lecture_id)===String(lectureId));
+    const base=i>=0?arr[i]:{id:uid(),student_key:ANON_STUDENT_KEY,lecture_id:lectureId,completed:false,created_at:nowIso()};
+    base.last_opened_at=nowIso();
+    if(completed!==null){base.completed=completed;base.completed_at=completed?nowIso():null}
+    if(i>=0)arr[i]=base;else arr.unshift(base);
+    local.write('lecture_progress',arr);
+    return base;
+  }
+  async function getSiteSettings(){
+    try{
+      const rows=await db.list('site_settings');
+      return rows.find(x=>String(x.id)==='main')||rows[0]||{};
+    }catch{
+      return local.read('site_settings')[0]||{};
+    }
+  }
+  const normalizeWa=v=>String(v||'').replace(/\D/g,'').replace(/^00/,'');
+  async function whatsappFeedbackUrl(context='اللاب'){
+    const settings=await getSiteSettings();
+    const number=normalizeWa(settings.whatsapp_number||cfg.WHATSAPP_NUMBER||'');
+    if(!number)return '';
+    const text=encodeURIComponent(`مرحباً، أريد Feedback على ${context}.`);
+    return `https://wa.me/${number}?text=${text}`;
+  }
+
+  const tools=[
+    ['about-btec','✣','تعريف بنظام BTEC','افهم النظام، التقييم، Pass / Merit / Distinction وطريقة التعامل مع الـAssignments.'],
+    ['glossary','⌁','دليل مصطلحات BTEC','مصطلحات الأوامر المهمة مع البحث والتصفية حسب مستوى التقييم.'],
+    ['calculator','▦','حاسبة المعدل','حاسبة BTEC الكاملة: 35% + 35% + المواد المشتركة 30%.'],
+    ['schedule','▣','الجدول الدراسي','خطّط أسبوعك واحفظ مهامك ومحاضراتك على جهازك.'],
+    ['timer','◴','مؤقت الدراسة','جلسات تركيز Pomodoro تساعدك تنجز بدون تشتت.'],
+    ['courses','▤','الكورسات','كل كورس يجمع محاضراته، وفي نهاية كل محاضرة تجد الـLab المرتبط بها.'],
+    ['tasks','▧','المهمات','مهمات BTEC مع الملفات والروابط وشرح المهمة في مكان واحد.'],
+    ['quizzes','?','اختبارات BTEC','اختبارات التخصصات الأساسية مع حفظ النتيجة وإعادة المحاولة.'],
+  ];
+
+  // BTEC command terms used throughout the learning experience.
+  const glossary=[
+    {verb:'Explain',ar:'اشرح',def:"Show how or why something is the way it is. Use linking words like 'This leads to...', 'Therefore...', 'Because...'.",defAr:"اشرح كيف أو لماذا يحدث الشيء، واربط السبب بالنتيجة باستخدام كلمات مثل: لذلك، لأن، هذا يؤدي إلى.",grade:'merit'},
+    {verb:'Describe',ar:'صف',def:'Give a detailed account of what something looks like, how it works, or what its features are.',defAr:'اكتب وصفًا واضحًا ومفصلًا للشكل أو طريقة العمل أو الخصائص.',grade:'pass'},
+    {verb:'Identify',ar:'حدد',def:'List or name the main points, features, or characteristics without detailed explanation.',defAr:'اذكر النقاط أو الخصائص الرئيسية بشكل مباشر بدون شرح طويل.',grade:'pass'},
+    {verb:'Justify',ar:'برر',def:'Give valid reasons or evidence to support an answer or conclusion.',defAr:'قدّم أسبابًا وأدلة مقنعة تدعم إجابتك أو استنتاجك.',grade:'distinction'},
+    {verb:'Evaluate',ar:'قيّم',def:'Judge strengths, weaknesses, and overall value based on evidence.',defAr:'وازن بين نقاط القوة والضعف ثم أعط حكمًا نهائيًا مدعومًا بالأدلة.',grade:'distinction'},
+    {verb:'Analyze',ar:'حلل',def:'Break complex ideas into parts and show how they relate to each other.',defAr:'فكك الفكرة إلى أجزاء، واشرح العلاقات والأسباب والنتائج بينها.',grade:'distinction'},
+    {verb:'List',ar:'اذكر/عدد',def:'Provide items or points in a series without explanation.',defAr:'اكتب العناصر أو النقاط على شكل قائمة بدون شرح.',grade:'pass'},
+    {verb:'State',ar:'اذكر بوضوح',def:'Express information clearly and briefly in a straightforward way.',defAr:'اكتب المعلومة بوضوح واختصار وبشكل مباشر.',grade:'pass'},
+    {verb:'Compare',ar:'قارن',def:'Show similarities and differences between two or more things.',defAr:'بيّن أوجه التشابه والاختلاف بين عنصرين أو أكثر.',grade:'merit'},
+    {verb:'Recommend',ar:'أوصِ',def:'Suggest a solution or action and give reasons to support it.',defAr:'اقترح الخيار الأنسب وفسّر لماذا هو مناسب باستخدام أسباب واضحة.',grade:'merit'},
+    {verb:'Discuss',ar:'ناقش',def:'Explore different ideas, arguments, or viewpoints before a conclusion.',defAr:'اعرض أكثر من وجهة نظر وناقشها قبل الوصول إلى استنتاج.',grade:'merit'},
+    {verb:'Define',ar:'عرّف',def:'Give the exact meaning of a word, term, or concept.',defAr:'اذكر المعنى الدقيق للمصطلح أو المفهوم.',grade:'merit'},
+    {verb:'Give',ar:'أعطِ',def:'Provide an example, item, or piece of information.',defAr:'قدّم مثالًا أو عنصرًا أو معلومة محددة.',grade:'pass'},
+    {verb:'Label',ar:'سمِّ/علّم',def:'Add names, labels, or tags to a diagram, chart, or image.',defAr:'أضف التسميات المناسبة على الرسم أو المخطط أو الصورة.',grade:'pass'},
+    {verb:'Name',ar:'سمِّ',def:'State the name of something without further explanation.',defAr:'اذكر اسم الشيء فقط بدون شرح إضافي.',grade:'pass'},
+    {verb:'Illustrate',ar:'وضّح بمثال',def:'Use examples, diagrams, or drawings to make something clear.',defAr:'استخدم مثالًا أو رسمًا أو مخططًا لتوضيح الفكرة.',grade:'merit'},
+    {verb:'Examine',ar:'افحص',def:'Investigate something closely and in detail to understand it better.',defAr:'ادرس الموضوع بالتفصيل ومن أكثر من جانب لفهمه جيدًا.',grade:'merit'},
+    {verb:'Explain importance of',ar:'اشرح أهمية',def:'Show why something is important using reasons and evidence.',defAr:'وضح لماذا الشيء مهم وما أثره، مع أسباب أو أدلة.',grade:'merit'},
+    {verb:'Assess impact of',ar:'قيّم تأثير',def:'Judge how something affects or influences another t
