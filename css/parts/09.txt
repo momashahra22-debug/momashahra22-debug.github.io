@@ -1,11 +1,7 @@
 button[data-vfull].is-fullscreen{background:linear-gradient(135deg,rgba(77,164,255,.32),rgba(74,93,255,.28));color:#fff;box-shadow:0 0 18px rgba(77,164,255,.18)}
 .site-video-controls button[data-vfull].is-fullscreen:after{content:""}
 
-
 /* V16 — YouTube-only HD boost + supported manual quality fallback */
-/* YouTube uses viewing conditions (including player size) to choose auto quality. Keep an
-   internal 1280x720 player viewport and visually scale it to our themed frame. This biases
-   Auto toward HD when the source/network/browser allow it, without claiming a forced 720p. */
 .site-video-player.playing:not(.native-quality-mode) .site-video-crop iframe{
   position:absolute!important;
   left:50%!important;
@@ -29,3 +25,32 @@ button[data-vfull].is-fullscreen{background:linear-gradient(135deg,rgba(77,164,2
 .site-video-player.native-quality-mode:after{display:none}
 .site-video-player.native-quality-mode{background:#000}
 @media(max-width:760px){.site-video-quality-exit{top:8px;left:8px;min-height:34px;padding-inline:10px;font-size:10px}}
+
+/* V20 — StudyMate logo header integration */
+.brand.brand-logo{
+  width:148px;
+  height:44px;
+  min-width:148px;
+  padding:0 4px;
+  overflow:hidden;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+}
+.brand-logo-img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  border-radius:10px;
+  filter:drop-shadow(0 0 10px rgba(70,150,255,.18));
+}
+@media(max-width:1180px){
+  .brand.brand-logo{width:118px;min-width:118px;height:40px}
+}
+@media(max-width:700px){
+  .brand.brand-logo{width:96px;min-width:96px;height:38px}
+}
