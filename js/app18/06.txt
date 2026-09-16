@@ -1,0 +1,174 @@
+Yzf6bQyVdjjSTMKbuBeV3duOeJJ8JdaQl93Ew8elRTMivAmbhJ0vOFCW9lsP85ZrM2/RwKiu4Js/pIWNJUmCJZgMap8Mrbny5etDBp/YoJ5n60GMnDyrq2HraKcg/UVbADSnZHP8KzbBUjHjfMBTC9xbkZ7OMZg6eBnCE+49we7V1ypOiIIQq/OBYsK2bNhfrY7WqmGw72ABWJi3hTxlUt4LzF4NcZt32pFOhPFhWcACWD0bTZCUfvqw6+Gworz9dU+6q9TMymt4kQNEDzqG4vBnN4h6P2aCXm1BjI0EiHCtSOuddmAqQzq9udaPO+JltLgIAt0MtuQvzZbCGfiQH/F+4Czu8CrqFfYWdc+VzKq6jIpkXwPk+CNzZfNjRCnT4GIRdm0s4+rYSxGuKCPuuvg6F3/VAw0awV2QHN9VfxjqByPP/k2nEjJMfv3jVbsR8ziIgRXYmyksgV45/7L//PyS8Oo8J2MAOBZaJan/9/tHr6U382n0ohHjOyrQvT9mGiIO5+or4fb+iWEtN7P2h7/2fwZPeo9VUmb6D+20Pn45JhAOfrRvxz8xPAyISypBJTX/BEhZTXmXSgXk1buiiITwzQCxfAHBx8+dEZYJknJZgFO0wJGC+QAKzAMFByL0VDNXCPkzKTpQ6mWB8MWqmNMk7UnbzpLSDbykaIOH3gBnz/zkOglVLjwdJzMR7naKQ/RLSwGiDny1FK5SCgj3nIdfnAoWR5K7Rj/uFgswlf4FsECOJOeG5/PElCVqdLDGEpezcDpOHwP7j9bHcLhcdX7mQx9QolMbN28sYQswRBZc7tMSHF4kcP5E3cGGCQkScY3XggY5cwVignittql7ZgBfHPUpbCaiTu6pnSlXPMj1JxdcZHgn0rqMepZldl5oRfKB61bLnuuZWIjXBscokq1i10IA/2dT48HaPZnbGUfKjRaQnxuEqZlHcimnTKppHRRNF47MbE3vUgRgL3atjCF4NPUPa7y7sqWnonoeJF0fae7cmZcYzWpf0SR1POjNrX9sGGKbA5CV7dwHzAHwlWJgBeIPhaQad40yTPdDzJXGEYaHrcAq1uK71RwitY+CCpwPiotYC4eb1YkpvA7o3CScWyZdWrWm72UwbovnQ8QE/xEoMvp1B07EpPhdaMH3vCj74shfy7dN6N8/2sv6fdB6MvA5kLcIn1gOs1m1GiurDH5F2Q5BjeH90um8c/kurc2ztdpDj0BqONHuVxdxJdV2aTvvSakbXwqZ1mH0PqEuA5FE4+qP/qyrCPzkuby2wYpzabgTn32mm0dZGTcfY2nf0S9nubjx0Hvtc8Pq8d/eTMY3JAZs09q6QWV0d7FsnSvSYUHGTIpSmmDCU7mzkB+NjUCmYQ1t7LypEK7saj9L/acmVkul4sMUY9DifkY5mCLflp0j1Ucfnwg3LnkOawaX0/Y7/eTPlYH+NOdsO9cZpasT5vJI+9Lp2x4G+olB+m/mr3TBuedqcmhJzKFIj0KQywzQw7/l7KlWCEhMJIdD7+m7xGTIOvCVfDI2BXyO/xTc3J7K7qaKkYK1SGhUNGUawMUAAA" alt="طالب BTEC يدرس" draggable="false"></div>
+          <div class="float-chip chip-a"><span>✓</span> Lectures</div>
+          <div class="float-chip chip-b"><span>✓</span> Labs</div>
+          <div class="float-chip chip-d"><span>↗</span> Better Skills</div>
+        </div>
+      </section>
+      <section class="trust-strip sahaba-reveal home-stats">
+        <div><strong>11</strong><span>تخصص BTEC</span></div>
+        <div><strong>50+</strong><span>مصطلح أساسي</span></div>
+        <div><strong>100+</strong><span>سؤال وكويز</span></div>
+        <div><strong>+200</strong><span>محتوى تعليمي</span></div>
+      </section>
+    </div>`;
+    bindGo();initDynamicMotion();
+    const hero=$('#heroSahaba'),character=$('#heroCharacter');
+    if(hero){
+      hero.addEventListener('pointermove',e=>{
+        const r=hero.getBoundingClientRect(),nx=((e.clientX-r.left)/r.width-.5),ny=((e.clientY-r.top)/r.height-.5);
+        hero.style.setProperty('--mxh',`${(nx*100).toFixed(1)}%`);hero.style.setProperty('--myh',`${(ny*100).toFixed(1)}%`);
+        if(character&&!matchMedia('(prefers-reduced-motion: reduce)').matches)character.style.transform=`translate3d(${nx*-18}px,${ny*-14}px,0) rotateX(${ny*-2.3}deg) rotateY(${nx*3.4}deg)`;
+      });
+      hero.addEventListener('pointerleave',()=>{if(character)character.style.transform='translate3d(0,0,0) rotateX(0deg) rotateY(0deg)'});
+    }
+  }
+  async function lectures(){page('المحاضرات','محتوى الفيديو والشرح المرتب ضمن مسارك الدراسي.',loading());try{app.insertAdjacentHTML('beforeend','');const list=(await db.list('lectures')).filter(x=>x.is_published!==false);page('المحاضرات','محتوى الفيديو والشرح المرتب ضمن مسارك الدراسي.',contentCards('lectures',list))}catch{page('المحاضرات','',`<div class="empty">تعذر تحميل المحاضرات.</div>`)}}
+  async function labs(){page('اللابات','التطبيق العملي المرتبط بالمحاضرات.',loading());try{const [lecs,labs]=await Promise.all([db.list('lectures'),db.list('labs')]);const visible=labs.filter(x=>x.is_published!==false);const html=!visible.length?'<div class="empty">لا توجد لابات.</div>':`<div class="grid">${visible.map(l=>{const lec=lecs.find(x=>x.id===l.lecture_id);return `<article class="content-card"><div class="card-top"><span class="badge gold">Lab</span><span class="badge gray">${safe(lec?.title||'بدون محاضرة')}</span></div><h3>${safe(l.title)}</h3><p>${safe(l.description||'')}</p>${l.instructions?`<div class="notice" style="margin-top:13px">${safe(l.instructions)}</div>`:''}</article>`}).join('')}</div>`;page('اللابات','التطبيق العملي المرتبط بالمحاضرات.',html)}catch{page('اللابات','',`<div class="empty">تعذر تحميل اللابات.</div>`)}}
+  const ytId=u=>{
+    try{
+      if(!u)return '';
+      const x=new URL(String(u).trim());
+      const host=x.hostname.replace(/^www\./,'').replace(/^m\./,'');
+      let id='';
+      if(host==='youtu.be') id=x.pathname.split('/').filter(Boolean)[0]||'';
+      else if(host.endsWith('youtube.com')){
+        if(x.searchParams.get('v')) id=x.searchParams.get('v')||'';
+        else{
+          const parts=x.pathname.split('/').filter(Boolean);
+          const ix=parts.findIndex(p=>['embed','shorts','live'].includes(p));
+          if(ix>=0) id=parts[ix+1]||'';
+        }
+      }
+      id=id.split(/[?&#]/)[0];
+      return /^[A-Za-z0-9_-]{6,20}$/.test(id)?id:'';
+    }catch{return ''}
+  };
+  const ytEmbed=u=>{const id=ytId(u);return id?`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1`:''};
+  const lectureHasContent=(lec,labs=[])=>Boolean(String(lec?.description||'').trim()||ytId(lec?.youtube_url||'')||labs.some(l=>String(l.lecture_id)===String(lec?.id)&&l.is_published!==false));
+  async function courses(){
+    try{
+      const [courseRows,lecs,labs,progress]=await Promise.all([db.list('courses'),db.list('lectures'),db.list('labs'),getProgress()]);
+      let visibleCourses=courseRows.filter(x=>x.is_published!==false);
+      if(!visibleCourses.length){
+        const names=[...new Set(lecs.filter(x=>x.is_published!==false).map(x=>x.course||x.unit||'BTEC'))];
+        visibleCourses=names.map((title,i)=>({id:'legacy-'+i,title,description:'محتوى مرتب من محاضرات ولابات في مسار واحد.',legacy:true}));
+      }
+      const done=new Set(progress.filter(x=>x.completed).map(x=>String(x.lecture_id)));
+      visibleCourses=visibleCourses.filter(c=>lecs.some(x=>x.is_published!==false&&lectureHasContent(x,labs)&&(c.legacy?(x.course||x.unit||'BTEC')===c.title:(String(x.course_id||'')===String(c.id)||(x.course&&!x.course_id&&x.course===c.title)))));
+      page('الكورسات','اختر الكورس وكمل من المكان اللي وقفت عنده.',`<div class="course-grid reveal">${visibleCourses.map((c,i)=>{
+        const items=lecs.filter(x=>x.is_published!==false&&lectureHasContent(x,labs)&&(c.legacy?(x.course||x.unit||'BTEC')===c.title:(String(x.course_id||'')===String(c.id)||(x.course&&!x.course_id&&x.course===c.title))));
+        const labCount=labs.filter(l=>l.is_published!==false&&items.some(x=>String(x.id)===String(l.lecture_id))).length;
+        const completed=items.filter(x=>done.has(String(x.id))).length;
+        const pct=items.length?Math.round(completed/items.length*100):0;
+        return `<button class="course-card" data-course-id="${safe(c.id)}" data-course-title="${safe(c.title)}" style="text-align:right;color:inherit"><div class="course-icon">${safe(c.icon||['B','✦','◈','▤'][i%4])}</div><h3>${safe(c.title)}</h3><p>${safe(c.description||'محتوى مرتب من محاضرات ولابات في مسار واحد.')}</p><div class="course-progress"><span style="width:${pct}%"></span></div><div class="course-stats"><span>${items.length} محاضرات</span><span>${labCount} لابات</span><span>${completed}/${items.length} مكتمل</span></div></button>`
+      }).join('')||'<div class="polished-empty compact"><span>✦</span><b>لا توجد كورسات متاحة</b></div>'}</div>`);
+      $$('[data-course-id]').forEach(b=>b.onclick=()=>route('course/'+encodeURIComponent(b.dataset.courseId)+'?title='+encodeURIComponent(b.dataset.courseTitle)));
+    }catch(e){console.error(e);page('الكورسات','',`<div class="empty">تعذر تحميل الكورسات.</div>`)}
+  }
+
+  async function courseDetail(courseToken){
+    const [courseRows,lecs,labs,progress]=await Promise.all([db.list('courses'),db.list('lectures'),db.list('labs'),getProgress()]);
+    const token=String(courseToken||'').split('?')[0];
+    const queryTitle=decodeURIComponent((location.hash.split('?title=')[1]||'').replace(/\+/g,' '));
+    const c=courseRows.find(x=>String(x.id)===token);
+    const title=c?.title||queryTitle||'الكورس';
+    const items=lecs.filter(x=>x.is_published!==false&&lectureHasContent(x,labs)&&(c?(String(x.course_id||'')===String(c.id)||(x.course&&!x.course_id&&x.course===c.title)):(x.course||x.unit||'BTEC')===title));
+    const done=new Set(progress.filter(x=>x.completed).map(x=>String(x.lecture_id)));
+    const completed=items.filter(x=>done.has(String(x.id))).length,pct=items.length?Math.round(completed/items.length*100):0;
+    page(title,`${completed} من ${items.length} محاضرات مكتملة`,`${items.length?`<div class="course-overall"><div><b>تقدمك في الكورس</b><span>${pct}%</span></div><div class="course-progress big"><span style="width:${pct}%"></span></div></div>`:''}<div class="lecture-list reveal">${items.map((x,i)=>{const n=labs.filter(l=>String(l.lecture_id)===String(x.id)&&l.is_published!==false).length;const isDone=done.has(String(x.id));return `<div class="lecture-row ${isDone?'lecture-done':''}"><div class="lecture-index">${isDone?'✓':i+1}</div><div><h3>${safe(x.title)}</h3><p>${safe(x.description||'')} ${n?`• ${n} Lab`:''}</p></div><button class="btn secondary small" data-lecture="${x.id}">${isDone?'مراجعة':'فتح المحاضرة'}</button></div>`}).join('')}</div><div style="margin-top:18px"><button class="btn secondary" data-go="courses">العودة للكورسات</button></div>`);
+    bindGo();
+    $$('[data-lecture]').forEach(b=>b.onclick=()=>route('lecture/'+b.dataset.lecture));
+  }
+
+  async function lectureDetail(id){
+    const [lecs,labs,courseRows,progressRows]=await Promise.all([db.list('lectures'),db.list('labs'),db.list('courses'),getProgress(id)]);
+    const lec=lecs.find(x=>String(x.id)===String(id));
+    if(!lec){route('courses');return}
+    await touchLecture(lec.id,null).catch(()=>{});
+    const course=courseRows.find(c=>String(c.id)===String(lec.course_id));
+    const related=labs.filter(l=>String(l.lecture_id)===String(lec.id)&&l.is_published!==false);
+    const videoId=ytId(lec.youtube_url||''),isDone=Boolean(progressRows[0]?.completed);
+    const videoHtml=videoId?`<div class="site-video-player" data-video-id="${safe(videoId)}" data-video-title="${safe(lec.title)}">
+      <img class="site-video-poster" src="https://i.ytimg.com/vi/${safe(videoId)}/maxresdefault.jpg" alt="" loading="eager" onerror="this.src='https://i.ytimg.com/vi/${safe(videoId)}/hqdefault.jpg'">
+      <div class="site-video-shade"></div>
+      <div class="site-video-top"><span class="badge">STUDYMATE VIDEO</span><strong>${safe(lec.title)}</strong></div>
+      <button class="site-video-play" type="button" aria-label="تشغيل المحاضرة"><span>▶</span><b>تشغيل المحاضرة</b><small>مشغل StudyMate</small></button>
+      <div class="site-video-bottom"><span>● جاهز للمشاهدة</span><span>16:9 • BTEC</span></div>
+    </div>`:'';
+    const firstLabLink=related.find(l=>l.lab_url&&validUrl(l.lab_url));
+    const videoLabCta=videoId&&related.length?`<div class="video-lab-cta">${firstLabLink?`<a class="btn video-lab-btn" href="${safe(firstLabLink.lab_url)}" target="_blank" rel="noopener noreferrer">فتح اللاب المرتبط <span>↗</span></a>`:`<button class="btn video-lab-btn" type="button" id="scrollToLabs">عرض اللاب المرتبط <span>↓</span></button>`}</div>`:'';
+    const description=String(lec.description||'').trim();
+    const copyHtml=description?`<div class="lecture-copy"><div class="lecture-copy-head"><h2>شرح المحاضرة</h2><button class="btn ${isDone?'success':'secondary'} small" id="toggleLectureDone">${isDone?'✓ مكتملة':'✓ علّم المحاضرة كمكتملة'}</button></div><p>${safe(description)}</p></div>`:`<div class="lecture-actions-bar"><button class="btn ${isDone?'success':'secondary'}" id="toggleLectureDone">${isDone?'✓ المحاضرة مكتملة':'✓ علّم المحاضرة كمكتملة'}</button></div>`;
+    const labHtml=related.length?`<div id="lectureLabs" class="section-head lecture-section-head"><div><h2>التطبيق العملي</h2><p>اللابات المرتبطة بهذه المحاضرة.</p></div></div>${related.map(l=>`<div class="lab-card">
+      <div class="card-top"><span class="badge gold">LAB</span></div>
+      <h3>${safe(l.title)}</h3>
+      ${l.description?`<p>${safe(l.description)}</p>`:''}
+      ${l.instructions?`<div class="notice" style="margin-top:12px">${safe(l.instructions)}</div>`:''}
+      <div class="lab-actions">
+        ${l.lab_url&&validUrl(l.lab_url)?`<a class="btn" href="${safe(l.lab_url)}" target="_blank" rel="noopener noreferrer">فتح رابط اللاب</a>`:''}
+        <button class="btn whatsapp-lab" data-wa-lab="${safe(l.title)}">بدك Feedback؟ تواصل واتساب</button>
+      </div>
+    </div>`).join('')}`:'';
+    page(lec.title,`${safe(course?.title||lec.course||lec.unit||'BTEC')}${lec.unit?' • '+safe(lec.unit):''}`,`<div class="lecture-shell reveal">${videoHtml}${videoLabCta}${copyHtml}${labHtml}<div class="lecture-back"><button class="btn secondary" data-go="courses">العودة للكورسات</button></div></div>`);
+    bindGo();
+    $('#scrollToLabs')?.addEventListener('click',()=>$('#lectureLabs')?.scrollIntoView({behavior:'smooth',block:'start'}));
+    $('.site-video-player')?.addEventListener('click',e=>{
+      const box=e.currentTarget,id=box.dataset.videoId,title=box.dataset.videoTitle||'محاضرة';
+      mountStudyMateVideo(box,id,title);
+    },{once:true});
+    $('#toggleLectureDone').onclick=async()=>{
+      const next=!isDone;
+      try{await touchLecture(lec.id,next);toast(next?'تم حفظ تقدمك ✓':'تم تحديث تقدمك');lectureDetail(id)}
+      catch(e){toast('تعذر حفظ التقدم','error')}
+    };
+    $$('[data-wa-lab]').forEach(b=>b.onclick=async()=>{
+      const url=await whatsappFeedbackUrl(`اللاب: ${b.dataset.waLab}`);
+      if(!url)return toast('رقم واتساب لم يتم ضبطه من لوحة الإدارة','error');
+      window.open(url,'_blank','noopener');
+    });
+  }
+
+  const RESOURCE_GRADES=['الكل','العاشر','الأول ثانوي','التوجيهي'];
+  const RESOURCE_SPECS=['الكل','تكنولوجيا المعلومات','إدارة الأعمال','الهندسة','التجميل','الزراعة','الضيافة','الفن والتصميم','البناء والإنشاءات','الإعلام الإبداعي','السياحة والسفر','الرعاية الصحية'];
+
+  async function tasksPage(){
+    const list=(await db.list('tasks')).filter(x=>x.is_published!==false);
+    const saved=JSON.parse(localStorage.getItem('sm_task_filters')||'{}');
+    page('المهمات','مهمات BTEC مع الملفات والروابط وشرح كل مهمة.',`<div class="resource-filters tool-card"><div class="field"><label>الصف</label><select id="taskGrade">${RESOURCE_GRADES.map(x=>`<option ${saved.grade===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="field"><label>التخصص</label><select id="taskSpec">${RESOURCE_SPECS.map(x=>`<option ${saved.spec===x?'selected':''}>${x}</option>`).join('')}</select></div></div><div id="taskCards"></div>`);
+    const draw=()=>{
+      const grade=$('#taskGrade').value,spec=$('#taskSpec').value;
+      localStorage.setItem('sm_task_filters',JSON.stringify({grade,spec}));
+      const filtered=list.filter(x=>(grade==='الكل'||x.grade==='الكل'||x.grade===grade)&&(spec==='الكل'||x.specialization==='الكل'||x.specialization===spec));
+      $('#taskCards').innerHTML=filtered.length?`<div class="task-grid">${filtered.map(x=>`<article class="task-card feature-card">
+        <div class="card-top"><span class="badge gold">TASK</span><span class="badge gray">${safe(x.grade||'الكل')} • ${safe(x.specialization||'الكل')}</span></div>
+        <h3>${safe(x.title)}</h3>
+        ${x.description?`<p>${safe(x.description)}</p>`:''}
+        ${x.explanation?`<div class="task-explanation"><b>شرح المهمة</b><p>${safe(x.explanation)}</p></div>`:''}
+        <div class="task-actions">
+          ${x.task_url&&validUrl(x.task_url)?`<a class="btn small" href="${safe(x.task_url)}" target="_blank" rel="noopener noreferrer">فتح المهمة</a>`:''}
+          ${x.explanation_url&&validUrl(x.explanation_url)?`<a class="btn secondary small" href="${safe(x.explanation_url)}" target="_blank" rel="noopener noreferrer">فتح شرح المهمة</a>`:''}
+        </div>
+      </article>`).join('')}</div>`:'<div class="polished-empty compact"><span>▧</span><b>لا توجد مهمات مطابقة</b></div>';
+      initDynamicMotion();
+    };
+    $('#taskGrade').onchange=draw;$('#taskSpec').onchange=draw;draw();
+  }
+
+  async function resourcesPage(){
+    const list=(await db.list('resources')).filter(x=>x.is_published!==false&&validUrl(x.url));
+    const saved=JSON.parse(localStorage.getItem('sm_resource_filters')||'{}');
+    page('الملفات','اختر الصف والتخصص لعرض الملفات والروابط المناسبة لمسارك.',`<div class="resource-filters tool-card"><div class="field"><label>الصف</label><select id="resourceGrade">${RESOURCE_GRADES.map(x=>`<option ${saved.grade===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="field"><label>التخصص</label><select id="resourceSpec">${RESOURCE_SPECS.map(x=>`<option ${saved.spec===x?'selected':''}>${x}</option>`).join('')}</select></div></div><div id="resourceCards"></div>`);
+    const draw=()=>{
+      const grade=$('#resourceGrade').value,spec=$('#resourceSpec').value;
+      localStorage.setItem('sm_resource_filters',JSON.stringify({grade,spec}));
+      const filtered=list.filter(x=>(grade==='الكل'||x.grade==='الكل'||x.grade===grade)&&(spec==='الكل'||x.specialization==='الكل'||x.specialization===spec));
+      $('#resourceCards').innerHTML=filtered.length?`<div class="grid">${filtered.map(x=>`<article class="content-card resource-card"><div class="card-top"><span class="badge">${safe(x.kind||'رابط')}</span><span class="badge gray">${safe(x.grade||'الكل')} • ${safe(x.specialization||'الكل')}</span></div><h3>${safe(x.title)}</h3><p>${safe(x.description||'')}</p><div style="margin-top:16px"><a class="btn small" href="${safe(x.url)}" target="_blank" rel="noopener noreferrer">فتح ${x.kind==='ملف'?'الملف':'الرابط'}</a></div></article>`).join('')}</div>`:'<div class="polished-empty compact"><span>⌁</span><b>لا توجد نتائج مطابقة</b></div>';
+      initDynamicMotion();
+    };
+    $('#resourceGrade').onchange=draw;
+    $('#resourceSpec').onchange=draw;
+    draw();
+  }
+
+  function aboutBtec(){
+    page('ت
