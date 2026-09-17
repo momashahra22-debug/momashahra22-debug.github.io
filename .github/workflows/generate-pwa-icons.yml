@@ -20,9 +20,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y imagemagick
-          magick assets/studymate-logo.webp -resize 512x512! assets/studymate-icon-512.png
-          magick assets/studymate-logo.webp -resize 192x192! assets/studymate-icon-192.png
-          magick assets/studymate-logo.webp -resize 180x180! assets/studymate-apple-touch-icon.png
+          convert assets/studymate-logo.webp -resize 512x512! assets/studymate-icon-512.png
+          convert assets/studymate-logo.webp -resize 192x192! assets/studymate-icon-192.png
+          convert assets/studymate-logo.webp -resize 180x180! assets/studymate-apple-touch-icon.png
       - name: Commit generated icons
         run: |
           git config user.name 'github-actions[bot]'
