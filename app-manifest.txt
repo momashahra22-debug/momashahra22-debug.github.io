@@ -1,1 +1,1 @@
-{"name":"StudyMate BTEC","short_name":"StudyMate","start_url":"/","scope":"/","display":"minimal-ui","background_color":"#030916","theme_color":"#030916"}
+{"name":"StudyMate BTEC","short_name":"StudyMate","description":"StudyMate BTEC learning platform","lang":"ar","dir":"rtl","start_url":"/","scope":"/","display":"standalone","background_color":"#030916","theme_color":"#030916","icons":[{"src":"/assets/studymate-logo.webp","sizes":"any","type":"image/webp"}]}
