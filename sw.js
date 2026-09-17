@@ -1,7 +1,7 @@
-const VERSION='studymate-v23';
+const VERSION='studymate-v24';
 const APP_CACHE=`${VERSION}-app`;
 const DATA_CACHE=`${VERSION}-data`;
-const APP_SHELL=['./','./index.html','./app-manifest.txt?v=23','./assets/studymate-logo.webp?v=23','./js/css-loader.js?v=22','./js/app-loader.js?v=22','./js/config.js?v=22','./js/youtube-simple.js?v=22','./js/install-guide.js?v=23'];
+const APP_SHELL=['./','./index.html','./app-manifest.txt?v=24','./assets/studymate-logo.webp?v=24','./js/css-loader.js?v=22','./js/app-loader.js?v=22','./js/config.js?v=22','./js/youtube-simple.js?v=22','./js/install-guide.js?v=24'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(APP_CACHE).then(c=>c.addAll(APP_SHELL)).catch(()=>null));self.skipWaiting();});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>!k.startsWith(VERSION)).map(k=>caches.delete(k)))));self.clients.claim();});
 self.addEventListener('fetch',event=>{
