@@ -25,13 +25,22 @@
     .brand-logo-copy{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;line-height:1!important;white-space:nowrap!important}
     .brand-logo-copy strong{font-family:Cairo,Arial,sans-serif!important;font-size:15px!important;font-weight:900!important;letter-spacing:-.02em!important;color:#f7fbff!important}
     .brand-logo-copy small{margin-top:5px!important;font-family:Cairo,Arial,sans-serif!important;font-size:8px!important;font-weight:800!important;letter-spacing:.22em!important;color:#57a5ff!important}
+
+    .sm-footer{position:relative;z-index:5;display:flex;justify-content:center;padding:26px 16px max(26px,env(safe-area-inset-bottom));}
+    .sm-social-panel{display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:100%;padding:13px 15px;border-radius:18px;background:linear-gradient(135deg,rgba(10,26,50,.86),rgba(11,18,37,.82));border:1px solid rgba(124,165,226,.20);box-shadow:0 18px 50px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.035);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    .sm-social-link{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;color:#cbd8ea;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.10);text-decoration:none;transition:transform .18s ease,border-color .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease}
+    .sm-social-link svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .sm-social-link:hover{transform:translateY(-2px);color:#fff;background:rgba(70,141,255,.12);border-color:rgba(87,156,255,.40);box-shadow:0 10px 24px rgba(26,92,204,.18)}
+    .sm-social-link:focus-visible{outline:2px solid #57a5ff;outline-offset:3px}
+
     @media(max-width:1180px){.brand.brand-logo{min-width:174px!important;height:46px!important}.brand-logo-mark{width:36px!important;height:36px!important;min-width:36px!important}.brand-logo-copy strong{font-size:14px!important}}
     @media(max-width:900px){
       .nav-shell{min-height:64px!important;justify-content:center!important;padding:8px 12px!important}
       .brand.brand-logo{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;min-width:172px!important;height:46px!important;z-index:5!important;padding:4px 9px!important}
       .mobile-menu{position:relative!important;z-index:6!important;margin-inline-start:auto!important}
+      .sm-footer{padding-inline:12px}.sm-social-panel{gap:8px;padding:11px 12px}.sm-social-link{width:40px;height:40px}
     }
-    @media(max-width:420px){.brand.brand-logo{min-width:158px!important;height:44px!important}.brand-logo-mark{width:34px!important;height:34px!important;min-width:34px!important}.brand-logo-copy strong{font-size:13px!important}.brand-logo-copy small{font-size:7px!important}}
+    @media(max-width:420px){.brand.brand-logo{min-width:158px!important;height:44px!important}.brand-logo-mark{width:34px!important;height:34px!important;min-width:34px!important}.brand-logo-copy strong{font-size:13px!important}.brand-logo-copy small{font-size:7px!important}.sm-social-panel{width:100%;justify-content:space-evenly}.sm-social-link{width:43px;height:43px}}
   </style>
   <script src="js/css-loader.js?v=22"></script>
 </head>
@@ -71,6 +80,24 @@
   </header>
 
   <main id="app" class="app-shell" aria-live="polite"></main>
+
+  <footer class="sm-footer" aria-label="روابط التواصل">
+    <div class="sm-social-panel">
+      <a class="sm-social-link" href="https://wa.me/962771709835" target="_blank" rel="noopener noreferrer" aria-label="واتساب" title="واتساب">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.3-4.1A8 8 0 1 1 20 11.7Z"/><path d="M9.1 8.2c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 1.8c.1.3.1.5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.3 1.7 2.2 2.2.3.2.5.2.7 0l.8-1c.2-.2.4-.3.7-.2l1.8.8c.3.1.4.3.4.6 0 .6-.3 1.4-.8 1.8-.5.4-1.2.7-2 .7-1.1 0-2.6-.5-4.4-1.7-1.6-1.1-2.8-2.4-3.5-3.7-.7-1.3-.9-2.4-.7-3 .1-.4.4-.9.6-1.3Z"/></svg>
+      </a>
+      <a class="sm-social-link" href="https://www.instagram.com/29q_l/" target="_blank" rel="noopener noreferrer" aria-label="إنستغرام" title="إنستغرام">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.7" r=".8" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a class="sm-social-link" href="https://www.youtube.com/@mohammadalmashahra" target="_blank" rel="noopener noreferrer" aria-label="يوتيوب" title="يوتيوب">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12c0-2.3-.2-4-.5-4.8-.2-.6-.7-1.1-1.3-1.3C18.1 5.5 15.7 5.4 12 5.4s-6.1.1-7.2.5c-.6.2-1.1.7-1.3 1.3C3.2 8 3 9.7 3 12s.2 4 .5 4.8c.2.6.7 1.1 1.3 1.3 1.1.4 3.5.5 7.2.5s6.1-.1 7.2-.5c.6-.2 1.1-.7 1.3-1.3.3-.8.5-2.5.5-4.8Z"/><path d="m10 9 5 3-5 3Z"/></svg>
+      </a>
+      <a class="sm-social-link" href="https://www.linkedin.com/in/muhammad-almashahra-4a5a48282/" target="_blank" rel="noopener noreferrer" aria-label="لينكدإن" title="لينكدإن">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="9" width="3" height="11"/><path d="M5.5 4.5a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6Z"/><path d="M10 20V9h3v1.7c.8-1.3 2-2 3.6-2 2.6 0 4.4 1.7 4.4 5.2V20h-3v-5.5c0-1.8-.7-2.8-2.2-2.8-1.7 0-2.8 1.1-2.8 3.3v5Z"/></svg>
+      </a>
+    </div>
+  </footer>
+
   <div id="toastRoot" class="toast-root"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
