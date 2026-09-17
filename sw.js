@@ -1,4 +1,4 @@
-const VERSION='studymate-v29';
+const VERSION='studymate-v30';
 const APP_CACHE=`${VERSION}-app`;
 const DATA_CACHE=`${VERSION}-data`;
 const APP_SHELL=[
