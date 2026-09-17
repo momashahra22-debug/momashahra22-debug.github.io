@@ -9,18 +9,24 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="StudyMate" />
-  <link rel="manifest" href="manifest.json?v=25" />
-  <link rel="icon" type="image/webp" href="assets/studymate-logo.webp?v=25" />
-  <link rel="apple-touch-icon" href="assets/studymate-logo.webp?v=25" />
+  <link rel="manifest" href="manifest.json?v=27" />
+  <link rel="icon" type="image/webp" href="assets/studymate-logo.webp?v=27" />
+  <link rel="apple-touch-icon" href="assets/studymate-logo.webp?v=27" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style id="studymate-boot-css">
     html{background:#05070b}body{opacity:0;transition:opacity .18s ease}html.css-ready body{opacity:1}
-    .brand.brand-logo{width:148px!important;height:44px!important;min-width:148px!important;padding:0 4px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;border-radius:12px!important;background:transparent!important;flex:0 0 auto!important}
-    .brand-logo-img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain!important;object-position:center!important;border-radius:10px!important}
-    @media(max-width:1180px){.brand.brand-logo{width:118px!important;min-width:118px!important;height:40px!important}}
-    @media(max-width:700px){.brand.brand-logo{width:96px!important;min-width:96px!important;height:38px!important}}
+    .nav-shell{position:relative!important}
+    .brand.brand-logo{width:164px!important;height:46px!important;min-width:164px!important;padding:0 6px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;border-radius:14px!important;background:rgba(7,18,39,.28)!important;flex:0 0 auto!important}
+    .brand-logo-img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain!important;object-position:center!important;border-radius:10px!important;filter:drop-shadow(0 4px 14px rgba(50,130,255,.18))!important}
+    @media(max-width:1180px){.brand.brand-logo{width:142px!important;min-width:142px!important;height:44px!important}}
+    @media(max-width:900px){
+      .nav-shell{min-height:64px!important;justify-content:center!important;padding:8px 12px!important}
+      .brand.brand-logo{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:150px!important;min-width:150px!important;height:48px!important;z-index:5!important;background:rgba(5,14,32,.55)!important;box-shadow:0 8px 24px rgba(0,0,0,.18)!important}
+      .mobile-menu{position:relative!important;z-index:6!important;margin-inline-start:auto!important}
+    }
+    @media(max-width:420px){.brand.brand-logo{width:132px!important;min-width:132px!important;height:44px!important}}
   </style>
   <script src="js/css-loader.js?v=22"></script>
 </head>
@@ -35,7 +41,7 @@
   <header class="topbar">
     <div class="nav-shell">
       <button class="brand brand-logo" data-route="home" aria-label="الصفحة الرئيسية">
-        <img class="brand-logo-img" src="assets/studymate-logo.webp?v=25" alt="StudyMate BTEC" />
+        <img class="brand-logo-img" src="assets/studymate-logo.webp?v=27" alt="StudyMate BTEC" />
       </button>
       <button class="mobile-menu" id="mobileMenu" aria-label="فتح القائمة">☰</button>
       <nav class="nav-pills" id="navPills" aria-label="التنقل الرئيسي">
@@ -68,6 +74,6 @@
   <script src="js/config.js?v=22"></script>
   <script src="js/app-loader.js?v=22"></script>
   <script src="js/youtube-simple.js?v=22"></script>
-  <script src="js/install-guide.js?v=25"></script>
+  <script src="js/install-guide.js?v=27"></script>
 </body>
 </html>
