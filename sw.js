@@ -1,4 +1,4 @@
-const VERSION='studymate-v25';
+const VERSION='studymate-v26';
 const APP_CACHE=`${VERSION}-app`;
 const DATA_CACHE=`${VERSION}-data`;
 const APP_SHELL=['./','./index.html','./manifest.json?v=25','./assets/studymate-logo.webp?v=25','./js/css-loader.js?v=22','./js/app-loader.js?v=22','./js/config.js?v=22','./js/youtube-simple.js?v=22','./js/install-guide.js?v=25'];
