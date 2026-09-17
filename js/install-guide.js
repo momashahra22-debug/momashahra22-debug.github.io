@@ -55,7 +55,7 @@
         <button class="close" id="close" aria-label="إغلاق">×</button>
         <div class="badge">تثبيت سريع على الهاتف</div>
         <div class="head">
-          <div class="logo-box"><img src="/assets/studymate-logo.webp?v=28" alt="StudyMate"></div>
+          <div class="logo-box"><img src="/assets/studymate-symbol.svg?v=29" alt="StudyMate"></div>
           <div><h2>ثبّت StudyMate على جهازك</h2><p class="sub">بعد التثبيت بتفتح الكورسات والحصص من الشاشة الرئيسية مثل أي تطبيق.</p></div>
         </div>
         <div class="steps">${steps}</div>
