@@ -1,0 +1,1 @@
+{"name":"StudyMate BTEC","short_name":"StudyMate","start_url":"/","scope":"/","display":"minimal-ui","background_color":"#030916","theme_color":"#030916"}
