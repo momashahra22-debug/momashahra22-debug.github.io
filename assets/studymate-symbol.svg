@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" role="img" aria-label="StudyMate">
+  <defs>
+    <linearGradient id="bg" x1="90" y1="80" x2="640" y2="660" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071A3D"/>
+      <stop offset="0.52" stop-color="#0A2A5D"/>
+      <stop offset="1" stop-color="#111C4F"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="160" y1="180" x2="570" y2="550" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#55C7FF"/>
+      <stop offset="0.55" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#6D5CFF"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="34" y="34" width="652" height="652" rx="160" fill="url(#bg)"/>
+  <rect x="47" y="47" width="626" height="626" rx="147" fill="none" stroke="url(#blue)" stroke-width="10" opacity="0.9"/>
+  <circle cx="360" cy="350" r="214" fill="#2C6DFF" opacity="0.10" filter="url(#glow)"/>
+  <path d="M176 333c68-20 128-10 184 31v174c-58-38-120-49-184-28V333Z" fill="#F8FBFF" opacity="0.98"/>
+  <path d="M544 333c-68-20-128-10-184 31v174c58-38 120-49 184-28V333Z" fill="#DDEBFF" opacity="0.98"/>
+  <path d="M360 364v174" stroke="#2E75FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M165 318c77-29 142-17 195 27 53-44 118-56 195-27" fill="none" stroke="url(#blue)" stroke-width="18" stroke-linecap="round"/>
+  <path d="M244 230 360 178l116 52-116 53-116-53Z" fill="url(#blue)"/>
+  <path d="M292 257v54c0 24 31 44 68 44s68-20 68-44v-54" fill="none" stroke="#8EC9FF" stroke-width="15" stroke-linecap="round"/>
+  <path d="M477 232v80" stroke="#8EC9FF" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="477" cy="322" r="13" fill="#8EC9FF"/>
+  <path d="m180 190 10 27 27 10-27 10-10 27-10-27-27-10 27-10 10-27Z" fill="#66E5FF" opacity="0.95"/>
+</svg>
