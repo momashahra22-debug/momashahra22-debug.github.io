@@ -54,3 +54,98 @@ button[data-vfull].is-fullscreen{background:linear-gradient(135deg,rgba(77,164,2
 @media(max-width:700px){
   .brand.brand-logo{width:96px;min-width:96px;height:38px}
 }
+
+/* V31 — persistent compact contact bar */
+.sm-footer{
+  position:relative!important;
+  z-index:20!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:18px 14px 28px!important;
+  background:transparent!important;
+  overflow:visible!important;
+  transform:none!important;
+}
+.sm-footer:before,.sm-footer:after{content:none!important;display:none!important}
+.sm-social-panel{
+  position:relative!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:9px!important;
+  width:auto!important;
+  max-width:calc(100vw - 28px)!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:11px 13px!important;
+  border-radius:17px!important;
+  background:linear-gradient(135deg,rgba(10,25,49,.92),rgba(8,16,34,.9))!important;
+  border:1px solid rgba(118,165,232,.18)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.035)!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  overflow:hidden!important;
+  transform:none!important;
+}
+.sm-social-panel:before,.sm-social-panel:after{content:none!important;display:none!important}
+.sm-social-link{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:11px!important;
+  color:#cbd9eb!important;
+  background:rgba(255,255,255,.035)!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+  text-decoration:none!important;
+  line-height:1!important;
+  overflow:hidden!important;
+  transform:none!important;
+  transition:transform .18s ease,border-color .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease!important;
+}
+.sm-social-link:before,.sm-social-link:after{content:none!important;display:none!important}
+.sm-social-link svg{
+  position:static!important;
+  display:block!important;
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  min-height:20px!important;
+  max-width:20px!important;
+  max-height:20px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  transform:none!important;
+}
+.sm-social-link:hover{
+  transform:translateY(-2px)!important;
+  color:#fff!important;
+  background:rgba(70,141,255,.12)!important;
+  border-color:rgba(87,156,255,.38)!important;
+  box-shadow:0 8px 20px rgba(26,92,204,.16)!important;
+}
+.sm-social-link:focus-visible{outline:2px solid #57a5ff!important;outline-offset:3px!important}
+@media(max-width:520px){
+  .sm-footer{padding:14px 10px 22px!important}
+  .sm-social-panel{gap:7px!important;padding:9px 10px!important;border-radius:15px!important}
+  .sm-social-link{width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important}
+  .sm-social-link svg{width:19px!important;height:19px!important;min-width:19px!important;min-height:19px!important;max-width:19px!important;max-height:19px!important}
+}
