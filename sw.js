@@ -1,19 +1,19 @@
-const VERSION='studymate-v30';
+const VERSION='studymate-v31';
 const APP_CACHE=`${VERSION}-app`;
 const DATA_CACHE=`${VERSION}-data`;
 const APP_SHELL=[
   './',
   './index.html',
-  './manifest.json?v=29',
-  './assets/studymate-symbol.svg?v=29',
-  './assets/studymate-icon-192.png?v=29',
-  './assets/studymate-icon-512.png?v=29',
-  './assets/studymate-apple-touch-icon.png?v=29',
+  './manifest.json?v=31',
+  './assets/studymate-symbol.svg?v=31',
+  './assets/studymate-icon-192.png?v=31',
+  './assets/studymate-icon-512.png?v=31',
+  './assets/studymate-apple-touch-icon.png?v=31',
   './js/css-loader.js?v=22',
   './js/app-loader.js?v=22',
   './js/config.js?v=22',
   './js/youtube-simple.js?v=22',
-  './js/install-guide.js?v=29'
+  './js/install-guide.js?v=31'
 ];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(APP_CACHE).then(c=>c.addAll(APP_SHELL)).catch(()=>null));
