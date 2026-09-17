@@ -4,15 +4,10 @@
 
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
   const isStandalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-  const isMobileUA=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const touchMobile=navigator.maxTouchPoints>0&&matchMedia('(max-width: 900px)').matches;
-  const mobile=isMobileUA||touchMobile;
-  const force=new URLSearchParams(location.search).get('installGuide')==='1';
-  if(isStandalone||(!mobile&&!force)) return;
+  if(isStandalone) return;
 
   let deferredPrompt=null;
   let previousOverflow='';
-  const seenKey='sm_install_guide_seen_v25';
 
   const host=document.createElement('div');
   host.id='studymateInstallHost';
@@ -59,12 +54,12 @@
         <button class="close" id="close" aria-label="إغلاق">×</button>
         <div class="badge">تثبيت سريع على الهاتف</div>
         <div class="head">
-          <img src="/assets/studymate-logo.webp?v=25" alt="StudyMate">
-          <div><h2>خلّي StudyMate على شاشتك</h2><p class="sub">افتح الكورسات والحصص بسرعة بدون ما تدور على الرابط كل مرة.</p></div>
+          <img src="/assets/studymate-logo.webp?v=26" alt="StudyMate">
+          <div><h2>ثبّت StudyMate على جهازك</h2><p class="sub">بعد التثبيت بتفتح الكورسات والحصص من الشاشة الرئيسية مثل أي تطبيق.</p></div>
         </div>
         <div class="steps">${steps}</div>
         <div class="hint" id="hint"></div>
-        <div class="actions"><button class="primary" id="install">${isIOS?'عرض طريقة التثبيت':'تثبيت التطبيق'}</button><button class="later" id="later">لاحقاً</button></div>
+        <div class="actions"><button class="primary" id="install">${isIOS?'عرض طريقة التثبيت':'تثبيت التطبيق'}</button><button class="later" id="later">إغلاق</button></div>
       </section>
     </div>`;
 
@@ -75,40 +70,53 @@
   const backdrop=shadow.getElementById('backdrop');
 
   const show=()=>{
-    if(!force&&localStorage.getItem(seenKey)==='1') return;
     previousOverflow=document.documentElement.style.overflow;
     document.documentElement.style.overflow='hidden';
     host.style.display='block';
   };
-  const hide=(remember=true)=>{
+  const hide=()=>{
     host.style.display='none';
     document.documentElement.style.overflow=previousOverflow;
-    if(remember&&!force) localStorage.setItem(seenKey,'1');
   };
+
+  window.showStudyMateInstallGuide=show;
+
+  const attachHeroButton=()=>{
+    const actions=document.querySelector('.hero-actions');
+    if(!actions||actions.querySelector('[data-install-app]')) return;
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='btn blue-ghost magnetic';
+    btn.setAttribute('data-install-app','1');
+    btn.innerHTML='تنزيل التطبيق <span>↓</span>';
+    btn.addEventListener('click',show);
+    actions.appendChild(btn);
+  };
+
+  const observer=new MutationObserver(attachHeroButton);
+  observer.observe(document.getElementById('app')||document.body,{childList:true,subtree:true});
+  attachHeroButton();
+  window.addEventListener('hashchange',()=>setTimeout(attachHeroButton,0));
 
   window.addEventListener('beforeinstallprompt',e=>{
     e.preventDefault();
     deferredPrompt=e;
     install.textContent='تثبيت التطبيق';
-    show();
   });
-  window.addEventListener('appinstalled',()=>hide(true));
+  window.addEventListener('appinstalled',hide);
 
   install.addEventListener('click',async()=>{
     if(deferredPrompt){
       deferredPrompt.prompt();
-      const choice=await deferredPrompt.userChoice;
+      await deferredPrompt.userChoice;
       deferredPrompt=null;
-      if(choice?.outcome==='accepted') hide(true);
       return;
     }
     hint.textContent=isIOS?'من Safari: مشاركة ← Add to Home Screen ← Add':'من Chrome: ⋮ ← Install app / Add to Home screen';
     hint.classList.add('show');
   });
-  close.addEventListener('click',()=>hide(true));
-  later.addEventListener('click',()=>hide(true));
-  backdrop.addEventListener('click',e=>{if(e.target===backdrop) hide(true)});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&host.style.display!=='none') hide(true)});
-
-  setTimeout(show,1200);
+  close.addEventListener('click',hide);
+  later.addEventListener('click',hide);
+  backdrop.addEventListener('click',e=>{if(e.target===backdrop) hide()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&host.style.display!=='none') hide()});
 })();
