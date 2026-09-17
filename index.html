@@ -9,8 +9,9 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="StudyMate" />
-  <link rel="icon" type="image/webp" href="assets/studymate-logo.webp?v=22" />
-  <link rel="apple-touch-icon" href="assets/studymate-logo.webp?v=22" />
+  <link rel="manifest" href="app-manifest.txt?v=23" />
+  <link rel="icon" type="image/webp" href="assets/studymate-logo.webp?v=23" />
+  <link rel="apple-touch-icon" href="assets/studymate-logo.webp?v=23" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,6 +21,7 @@
     .brand-logo-img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain!important;object-position:center!important;border-radius:10px!important}
     @media(max-width:1180px){.brand.brand-logo{width:118px!important;min-width:118px!important;height:40px!important}}
     @media(max-width:700px){.brand.brand-logo{width:96px!important;min-width:96px!important;height:38px!important}}
+    .sm-install-guide{position:fixed;inset:0;z-index:99999;display:none;align-items:flex-end;justify-content:center;padding:14px;background:rgba(0,6,18,.72);backdrop-filter:blur(10px)}.sm-install-guide.show{display:flex}.sm-install-card{width:min(520px,100%);padding:20px;border-radius:24px;background:linear-gradient(150deg,rgba(7,23,54,.99),rgba(3,12,31,.99));border:1px solid rgba(99,166,255,.24);box-shadow:0 24px 80px rgba(0,0,0,.5);color:#eef7ff}.sm-install-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}.sm-install-head img{width:50px;height:50px;border-radius:13px;object-fit:cover}.sm-install-head b{font-size:18px}.sm-install-head p{margin:2px 0 0;color:#91a8c6;font-size:12px}.sm-install-steps{display:grid;gap:8px;margin:12px 0 16px}.sm-install-step{padding:10px 12px;border-radius:13px;background:rgba(75,139,255,.08);border:1px solid rgba(109,170,255,.12);font-size:12px;line-height:1.8;color:#d5e8ff}.sm-install-actions{display:flex;gap:8px}.sm-install-actions button{flex:1;border-radius:13px;padding:12px 14px;font:800 12px Cairo,sans-serif;cursor:pointer}.sm-install-primary{border:0;background:linear-gradient(135deg,#2f8cff,#4f63ff);color:#fff}.sm-install-secondary{background:rgba(255,255,255,.06);color:#b9cae0;border:1px solid rgba(255,255,255,.08)}
   </style>
   <script src="js/css-loader.js?v=22"></script>
 </head>
@@ -34,7 +36,7 @@
   <header class="topbar">
     <div class="nav-shell">
       <button class="brand brand-logo" data-route="home" aria-label="الصفحة الرئيسية">
-        <img class="brand-logo-img" src="assets/studymate-logo.webp?v=22" alt="StudyMate BTEC" />
+        <img class="brand-logo-img" src="assets/studymate-logo.webp?v=23" alt="StudyMate BTEC" />
       </button>
       <button class="mobile-menu" id="mobileMenu" aria-label="فتح القائمة">☰</button>
       <nav class="nav-pills" id="navPills" aria-label="التنقل الرئيسي">
@@ -60,6 +62,15 @@
   <main id="app" class="app-shell" aria-live="polite"></main>
   <div id="toastRoot" class="toast-root"></div>
 
+  <div class="sm-install-guide" id="smInstallGuide" role="dialog" aria-modal="true" aria-labelledby="smInstallTitle">
+    <div class="sm-install-card">
+      <div class="sm-install-head"><img src="assets/studymate-logo.webp?v=23" alt=""><div><b id="smInstallTitle">ثبّت StudyMate كتطبيق</b><p>افتح حصصك من الشاشة الرئيسية مثل أي تطبيق.</p></div></div>
+      <div id="smInstallAndroid"><div class="sm-install-steps"><div class="sm-install-step">1. افتح الموقع من Google Chrome.</div><div class="sm-install-step">2. اضغط ⋮ ثم اختر <b>Install app</b> أو <b>Add to Home screen</b>.</div><div class="sm-install-step">3. اضغط <b>Install</b> وبعدها افتح StudyMate من شاشة الهاتف.</div></div></div>
+      <div id="smInstallIOS" hidden><div class="sm-install-steps"><div class="sm-install-step">1. افتح الموقع من Safari على iPhone أو iPad.</div><div class="sm-install-step">2. اضغط زر المشاركة ثم اختر <b>Add to Home Screen</b>.</div><div class="sm-install-step">3. اضغط <b>Add</b> وسيظهر StudyMate على الشاشة الرئيسية.</div></div></div>
+      <div class="sm-install-actions"><button class="sm-install-primary" id="smInstallNow">تثبيت التطبيق</button><button class="sm-install-secondary" id="smInstallLater">لاحقاً</button></div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
@@ -67,5 +78,6 @@
   <script src="js/config.js?v=22"></script>
   <script src="js/app-loader.js?v=22"></script>
   <script src="js/youtube-simple.js?v=22"></script>
+  <script src="js/install-guide.js?v=23"></script>
 </body>
 </html>
