@@ -9,9 +9,9 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="StudyMate" />
-  <link rel="manifest" href="app-manifest.txt?v=23" />
-  <link rel="icon" type="image/webp" href="assets/studymate-logo.webp?v=23" />
-  <link rel="apple-touch-icon" href="assets/studymate-logo.webp?v=23" />
+  <link rel="manifest" href="app-manifest.txt?v=24" />
+  <link rel="icon" type="image/webp" href="assets/studymate-logo.webp?v=24" />
+  <link rel="apple-touch-icon" href="assets/studymate-logo.webp?v=24" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -21,7 +21,29 @@
     .brand-logo-img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain!important;object-position:center!important;border-radius:10px!important}
     @media(max-width:1180px){.brand.brand-logo{width:118px!important;min-width:118px!important;height:40px!important}}
     @media(max-width:700px){.brand.brand-logo{width:96px!important;min-width:96px!important;height:38px!important}}
-    .sm-install-guide{position:fixed;inset:0;z-index:99999;display:none;align-items:flex-end;justify-content:center;padding:14px;background:rgba(0,6,18,.72);backdrop-filter:blur(10px)}.sm-install-guide.show{display:flex}.sm-install-card{width:min(520px,100%);padding:20px;border-radius:24px;background:linear-gradient(150deg,rgba(7,23,54,.99),rgba(3,12,31,.99));border:1px solid rgba(99,166,255,.24);box-shadow:0 24px 80px rgba(0,0,0,.5);color:#eef7ff}.sm-install-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}.sm-install-head img{width:50px;height:50px;border-radius:13px;object-fit:cover}.sm-install-head b{font-size:18px}.sm-install-head p{margin:2px 0 0;color:#91a8c6;font-size:12px}.sm-install-steps{display:grid;gap:8px;margin:12px 0 16px}.sm-install-step{padding:10px 12px;border-radius:13px;background:rgba(75,139,255,.08);border:1px solid rgba(109,170,255,.12);font-size:12px;line-height:1.8;color:#d5e8ff}.sm-install-actions{display:flex;gap:8px}.sm-install-actions button{flex:1;border-radius:13px;padding:12px 14px;font:800 12px Cairo,sans-serif;cursor:pointer}.sm-install-primary{border:0;background:linear-gradient(135deg,#2f8cff,#4f63ff);color:#fff}.sm-install-secondary{background:rgba(255,255,255,.06);color:#b9cae0;border:1px solid rgba(255,255,255,.08)}
+
+    html.sm-install-open,html.sm-install-open body{overflow:hidden!important}
+    .sm-install-guide,.sm-install-guide *{box-sizing:border-box}
+    .sm-install-guide{position:fixed!important;inset:0!important;z-index:2147483000!important;display:none!important;align-items:flex-end!important;justify-content:center!important;padding:16px!important;padding-bottom:max(16px,env(safe-area-inset-bottom))!important;background:rgba(1,7,20,.62)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;direction:rtl!important}
+    .sm-install-guide.show{display:flex!important}
+    .sm-install-card{position:relative!important;width:min(430px,calc(100vw - 24px))!important;max-height:min(680px,calc(100dvh - 24px))!important;overflow:auto!important;margin:0!important;padding:18px!important;border-radius:24px!important;background:linear-gradient(160deg,#0b1b3d 0%,#07152e 62%,#061126 100%)!important;border:1px solid rgba(112,174,255,.22)!important;box-shadow:0 28px 90px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.02) inset!important;color:#f4f8ff!important;text-align:right!important;font-family:Cairo,sans-serif!important}
+    .sm-install-close{position:absolute!important;top:12px!important;left:12px!important;width:34px!important;height:34px!important;border-radius:11px!important;border:1px solid rgba(255,255,255,.08)!important;background:rgba(255,255,255,.05)!important;color:#9fb4d2!important;font:700 20px/1 Cairo,sans-serif!important;display:grid!important;place-items:center!important;cursor:pointer!important}
+    .sm-install-kicker{display:inline-flex!important;align-items:center!important;gap:6px!important;margin-bottom:12px!important;padding:6px 9px!important;border-radius:999px!important;background:rgba(66,140,255,.10)!important;border:1px solid rgba(98,159,255,.14)!important;color:#8fc5ff!important;font-size:10px!important;font-weight:900!important}
+    .sm-install-head{display:grid!important;grid-template-columns:56px 1fr!important;gap:13px!important;align-items:center!important;margin:0 0 14px!important;padding-left:38px!important}
+    .sm-install-head img{width:56px!important;height:56px!important;border-radius:16px!important;object-fit:cover!important;background:#08152f!important;box-shadow:0 10px 28px rgba(34,118,255,.18)!important}
+    .sm-install-head b{display:block!important;margin:0 0 3px!important;color:#fff!important;font-size:19px!important;line-height:1.35!important;font-weight:900!important}
+    .sm-install-head p{margin:0!important;color:#8fa5c4!important;font-size:12px!important;line-height:1.7!important}
+    .sm-install-steps{display:grid!important;gap:9px!important;margin:12px 0 14px!important}
+    .sm-install-step{display:grid!important;grid-template-columns:28px 1fr!important;gap:10px!important;align-items:start!important;padding:11px 12px!important;border-radius:15px!important;background:rgba(255,255,255,.035)!important;border:1px solid rgba(109,170,255,.09)!important;color:#dce9fb!important;font-size:11.5px!important;line-height:1.75!important}
+    .sm-install-num{width:28px!important;height:28px!important;border-radius:10px!important;display:grid!important;place-items:center!important;background:linear-gradient(135deg,#2e8cff,#5266ff)!important;color:#fff!important;font-size:11px!important;font-weight:900!important;box-shadow:0 8px 18px rgba(52,120,255,.2)!important}
+    .sm-install-step b{color:#fff!important;font-weight:900!important}
+    .sm-install-hint{margin:8px 0 0!important;padding:10px 12px!important;border-radius:13px!important;background:rgba(54,150,255,.09)!important;border:1px dashed rgba(109,177,255,.22)!important;color:#a9d2ff!important;font-size:11px!important;line-height:1.7!important;text-align:center!important}
+    .sm-install-actions{display:grid!important;grid-template-columns:1fr auto!important;gap:8px!important;margin-top:14px!important}
+    .sm-install-actions button{min-height:44px!important;border-radius:13px!important;padding:10px 14px!important;font:800 12px Cairo,sans-serif!important;cursor:pointer!important}
+    .sm-install-primary{border:0!important;background:linear-gradient(135deg,#2f8cff,#5164ff)!important;color:#fff!important;box-shadow:0 10px 24px rgba(45,112,255,.22)!important}
+    .sm-install-secondary{min-width:86px!important;background:rgba(255,255,255,.045)!important;color:#aebed5!important;border:1px solid rgba(255,255,255,.08)!important}
+    @media(min-width:821px){.sm-install-guide{display:none!important}}
+    @media(max-width:420px){.sm-install-guide{padding:10px!important;padding-bottom:max(10px,env(safe-area-inset-bottom))!important}.sm-install-card{width:100%!important;border-radius:22px!important;padding:16px!important}.sm-install-head{grid-template-columns:50px 1fr!important}.sm-install-head img{width:50px!important;height:50px!important}.sm-install-head b{font-size:17px!important}.sm-install-actions{grid-template-columns:1fr 82px!important}}
   </style>
   <script src="js/css-loader.js?v=22"></script>
 </head>
@@ -36,7 +58,7 @@
   <header class="topbar">
     <div class="nav-shell">
       <button class="brand brand-logo" data-route="home" aria-label="الصفحة الرئيسية">
-        <img class="brand-logo-img" src="assets/studymate-logo.webp?v=23" alt="StudyMate BTEC" />
+        <img class="brand-logo-img" src="assets/studymate-logo.webp?v=24" alt="StudyMate BTEC" />
       </button>
       <button class="mobile-menu" id="mobileMenu" aria-label="فتح القائمة">☰</button>
       <nav class="nav-pills" id="navPills" aria-label="التنقل الرئيسي">
@@ -64,9 +86,27 @@
 
   <div class="sm-install-guide" id="smInstallGuide" role="dialog" aria-modal="true" aria-labelledby="smInstallTitle">
     <div class="sm-install-card">
-      <div class="sm-install-head"><img src="assets/studymate-logo.webp?v=23" alt=""><div><b id="smInstallTitle">ثبّت StudyMate كتطبيق</b><p>افتح حصصك من الشاشة الرئيسية مثل أي تطبيق.</p></div></div>
-      <div id="smInstallAndroid"><div class="sm-install-steps"><div class="sm-install-step">1. افتح الموقع من Google Chrome.</div><div class="sm-install-step">2. اضغط ⋮ ثم اختر <b>Install app</b> أو <b>Add to Home screen</b>.</div><div class="sm-install-step">3. اضغط <b>Install</b> وبعدها افتح StudyMate من شاشة الهاتف.</div></div></div>
-      <div id="smInstallIOS" hidden><div class="sm-install-steps"><div class="sm-install-step">1. افتح الموقع من Safari على iPhone أو iPad.</div><div class="sm-install-step">2. اضغط زر المشاركة ثم اختر <b>Add to Home Screen</b>.</div><div class="sm-install-step">3. اضغط <b>Add</b> وسيظهر StudyMate على الشاشة الرئيسية.</div></div></div>
+      <button class="sm-install-close" id="smInstallClose" aria-label="إغلاق">×</button>
+      <div class="sm-install-kicker">تثبيت سريع على الهاتف</div>
+      <div class="sm-install-head">
+        <img src="assets/studymate-logo.webp?v=24" alt="StudyMate">
+        <div><b id="smInstallTitle">خلّي StudyMate على شاشتك</b><p>افتح الكورسات والحصص بسرعة بدون ما تدور على الرابط كل مرة.</p></div>
+      </div>
+      <div id="smInstallAndroid">
+        <div class="sm-install-steps">
+          <div class="sm-install-step"><span class="sm-install-num">1</span><div>افتح الموقع من <b>Google Chrome</b>.</div></div>
+          <div class="sm-install-step"><span class="sm-install-num">2</span><div>اضغط <b>⋮</b> ثم اختر <b>Install app</b> أو <b>Add to Home screen</b>.</div></div>
+          <div class="sm-install-step"><span class="sm-install-num">3</span><div>اضغط <b>Install</b> وراح يظهر StudyMate على شاشة هاتفك.</div></div>
+        </div>
+      </div>
+      <div id="smInstallIOS" hidden>
+        <div class="sm-install-steps">
+          <div class="sm-install-step"><span class="sm-install-num">1</span><div>افتح الموقع من <b>Safari</b>.</div></div>
+          <div class="sm-install-step"><span class="sm-install-num">2</span><div>اضغط زر <b>المشاركة</b> واختر <b>Add to Home Screen</b>.</div></div>
+          <div class="sm-install-step"><span class="sm-install-num">3</span><div>اضغط <b>Add</b> وراح يظهر StudyMate على الشاشة الرئيسية.</div></div>
+        </div>
+      </div>
+      <div id="smInstallHint" class="sm-install-hint" hidden></div>
       <div class="sm-install-actions"><button class="sm-install-primary" id="smInstallNow">تثبيت التطبيق</button><button class="sm-install-secondary" id="smInstallLater">لاحقاً</button></div>
     </div>
   </div>
@@ -78,6 +118,6 @@
   <script src="js/config.js?v=22"></script>
   <script src="js/app-loader.js?v=22"></script>
   <script src="js/youtube-simple.js?v=22"></script>
-  <script src="js/install-guide.js?v=23"></script>
+  <script src="js/install-guide.js?v=24"></script>
 </body>
 </html>
