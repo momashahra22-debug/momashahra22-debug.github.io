@@ -1,14 +1,11 @@
 window.STUDYMATE_CONFIG = {
-  // Supabase project configuration.
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: "",
-  AI_FUNCTION_NAME: "gemini-chat",
+  SUPABASE_URL: "https://wfyosvmbfypeuvqpuika.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_hxZnU8VCOd60HON9uc-e1w_aBVLh7tx",
 
   // Optional fallback. Prefer setting the WhatsApp number from the Admin settings page.
   WHATSAPP_NUMBER: "",
 
-
-  // Local fallback code; Supabase Admin auth overrides this when configured.
+  // Local-only fallback. The live admin panel uses Supabase Auth + RLS.
   LOCAL_ADMIN_CODE: "STUDYMATE-LOCAL-7M3K",
 
   // Built-in BTEC quiz datasets pinned to a fixed source revision.
