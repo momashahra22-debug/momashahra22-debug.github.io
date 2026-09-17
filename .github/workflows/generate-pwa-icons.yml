@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'assets/studymate-logo.webp'
+      - 'assets/studymate-symbol.svg'
       - '.github/workflows/generate-pwa-icons.yml'
 
 permissions:
@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Generate PNG icons from StudyMate logo
+      - name: Generate PNG icons from StudyMate symbol
         run: |
           sudo apt-get update
-          sudo apt-get install -y imagemagick
-          convert assets/studymate-logo.webp -resize 512x512! assets/studymate-icon-512.png
-          convert assets/studymate-logo.webp -resize 192x192! assets/studymate-icon-192.png
-          convert assets/studymate-logo.webp -resize 180x180! assets/studymate-apple-touch-icon.png
+          sudo apt-get install -y librsvg2-bin
+          rsvg-convert -w 512 -h 512 assets/studymate-symbol.svg -o assets/studymate-icon-512.png
+          rsvg-convert -w 192 -h 192 assets/studymate-symbol.svg -o assets/studymate-icon-192.png
+          rsvg-convert -w 180 -h 180 assets/studymate-symbol.svg -o assets/studymate-apple-touch-icon.png
       - name: Commit generated icons
         run: |
           git config user.name 'github-actions[bot]'
